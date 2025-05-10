@@ -13,14 +13,17 @@ namespace app\models;
 
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\Query;
 use yii\helpers\BaseInflector;
 
 /**
  * Class Media
  *
- * @property int    $item_id
- * @property int    $ordering
- * @property int    $media_id
+ * @property int        $item_id
+ * @property int        $ordering
+ * @property int        $media_id
+ *
+ * @property-read Media $media
  */
 class MediaGallery extends ActiveRecord
 {
@@ -49,8 +52,31 @@ class MediaGallery extends ActiveRecord
     {
         return [
             [['item_id', 'ordering', 'media_id'], 'integer'],
+            ['ordering', 'filter', 'filter' => function ($value) {
+                if ($value == 0) {
+                    return (new Query())
+                            ->from('media_gallery')
+                            ->where(['item_id' => $this->item_id])
+                            ->max('ordering') + 1;
+                }
+                return $value;
+            }],
             [['item_id', 'ordering', 'media_id'], 'required'],
-            ['ordering', 'unique', 'targetAttribute' => ['ordering', 'item_id']],
+            ['media_id', 'unique', 'targetAttribute' => ['media_id', 'item_id']],
         ];
+    }
+
+    public function delete(): void
+    {
+        $cond = [
+            'item_id' => $this->item_id
+        ];
+        parent::delete();
+        self::reorder(true, $cond);
+    }
+
+    public function getMedia(): ActiveQuery
+    {
+        return $this->hasMany(Media::class, ['id' => 'media_id']);
     }
 }

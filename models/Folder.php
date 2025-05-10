@@ -18,14 +18,16 @@ use yii\helpers\BaseInflector;
 /**
  * Class Media
  *
- * @property int    $id
- * @property int    $parent_id
- * @property string $title
+ * @property int        $id
+ * @property int        $parent_id
+ * @property string     $title
+ * @property Folder[]   $children
  *
  * @property-read Media[] $files
  */
 class Folder extends ActiveRecord
 {
+    public array $children = [];
     /**
      * @inheritDoc
      */
@@ -59,6 +61,19 @@ class Folder extends ActiveRecord
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels(): array
+    {
+        return [
+            'id' => 'id',
+            'parent_id' => 'Родитель',
+            'title' => 'Название',
+            'children' => 'Вложение',
+        ];
+    }
+
+    /**
      * @inheritDoc
      */
     public function beforeDelete(): bool
@@ -66,6 +81,11 @@ class Folder extends ActiveRecord
         foreach ($this->getFiles()->each() as $media) {
             /** @var Media $media */
             $media->delete();
+        }
+
+        foreach ($this->getChildren()->each() as $subFolder) {
+            /** @var Folder $media */
+            $subFolder->delete();
         }
 
         return parent::beforeDelete();
@@ -76,15 +96,63 @@ class Folder extends ActiveRecord
         return $this->hasMany(Media::class, ['folder_id' => 'id']);
     }
 
-    public static function getChain(int $id): string
+    public function getChildren(): ActiveQuery
     {
-        $titles = [];
+        return $this->hasMany(self::class, ['parent_id' => 'id']);
+    }
+
+    public static function getChain(int $id): array
+    {
+        $items = [];
         do {
             $item = self::findOne(['id' => $id]);
-            $titles[] = $item->title;
-            $id = $item->parent_id;
+            if (!empty($item)) {
+                $items[] = $item;
+                $id = $item->parent_id;
+            } else {
+                $id = 0;
+            }
         } while ($id != 0);
+        $items[] = (object) ['id' => 0,
+            'parent_id' => 0,
+            'title' => ''
+        ];
+        return array_reverse($items);
+    }
 
-        return '/' . implode('/', $titles);
+    public static function getTree(): array
+    {
+        return [
+            (object) [
+                'id' => 0,
+                'parent_id' => 0,
+                'title' => 'Корень',
+                'children' => self::formTree(static::find()->orderBy(['parent_id' => SORT_ASC])->all()),
+            ]
+        ];
+    }
+
+    protected static function formTree(array $rows, int $parentId = 0): array
+    {
+        $items = [];
+        foreach ($rows as $item) {
+            /** @var static $item */
+            if ($item->parent_id == $parentId) {
+                $item->children = self::formTree($rows, $item->id);
+                $items[] = $item;
+            }
+        }
+
+        return $items;
+    }
+
+    public static function getRoot(): \stdClass
+    {
+        return (object) [
+            'id' => 0,
+            'parent_id' => 0,
+            'title' => 'Корень',
+            'children' => static::find()->where(['parent_id' => 0])->orderBy(['title' => SORT_ASC])->all(),
+        ];
     }
 }

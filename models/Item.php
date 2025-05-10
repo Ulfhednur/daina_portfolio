@@ -32,6 +32,8 @@ use yii\helpers\BaseInflector;
  * @property string     $seo_description
  * @property int        $ordering
  * @property string     $created_date
+ *
+ * @property-read Media $image
  */
 abstract class Item extends ActiveRecord
 {
@@ -70,13 +72,15 @@ abstract class Item extends ActiveRecord
             [['description', 'seo_description', 'seo_title', 'subtitle'], 'string'],
             [['image_id', 'published', 'ordering'], 'integer'],
             ['published', 'in', 'range' => [0, 1]],
+            [['title'], 'required'],
             ['alias', 'filter', 'filter' => function ($value) {
+                if (empty($value)) {
+                    $value = $this->title;
+                }
                 return BaseInflector::slug($value);
             }],
-            [['title', 'alias'], 'required'],
             [['alias'], 'unique'],
-            [['image_id'], 'exist', 'targetClass' => Media::class, 'targetAttribute' => 'id'],
-            ['created_date', 'date', 'format' => 'php:Y-m-d H:i:s'],
+            ['created_date', 'default', 'value' => (new \DateTime())->setTimezone(new \DateTimeZone(env("TIMEZONE")))->format('Y-m-d H:i:s')],
         ];
     }
 
@@ -137,5 +141,14 @@ abstract class Item extends ActiveRecord
                 },
             ],
         ];
+    }
+
+    public static function Search(?string $search)
+    {
+        $query = static::find();
+        if ($search) {
+            $query->where(['like', 'title', $search]);
+        }
+        return $query;
     }
 }

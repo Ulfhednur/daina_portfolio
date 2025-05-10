@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace app\commands;
 
-use app\models\User;
+use app\modules\admin\models\User;
 use Throwable;
 use yii\console\Controller;
 use yii\console\ExitCode;

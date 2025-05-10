@@ -13,39 +13,56 @@ namespace app\models;
 
 use Yii;
 use yii\db\ActiveQuery;
+use yii\db\Query;
 
 /**
  * class Gallery
  *
- * @property int $id
- * @property string $item_type
- * @property int $image_id
- * @property int $published
- * @property string $alias
- * @property string $title
- * @property string $subtitle
- * @property string $description
- * @property string $seo_title
- * @property string $seo_description
- * @property int $ordering
- * @property string $created_date
+ * @property int                 $id
+ * @property string              $item_type
+ * @property int                 $image_id
+ * @property int                 $published
+ * @property string              $alias
+ * @property string              $title
+ * @property string              $subtitle
+ * @property string              $description
+ * @property string              $seo_title
+ * @property string              $seo_description
+ * @property int                 $ordering
+ * @property string              $created_date
  *
  * @property-read MediaGallery[] $galleryItems
  * @property-read Media[]        $media
+ * @property-read Media          $image
  */
 class Gallery extends Item
 {
-    protected array $media = [];
+    protected array $mediaItems = [];
 
     protected static string $itemType = parent::ITEM_TYPE_GALLERY;
 
     /**
      * @inheritDoc
      */
-    public function load($data, ?string $formName = null): bool
+    public function rules(): array
     {
-        if (parent::load($data, $formName) && !empty($data['media'])) {
-            $this->media = $data['media'];
+        return array_merge(
+            parent::rules(),
+            [
+                [['image_id'], 'exist', 'targetClass' => Media::class, 'targetAttribute' => 'id'],
+            ]
+        );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function load($data, $formName = null): bool
+    {
+        if (parent::load($data, $formName)) {
+            if (!empty($data['media'])) {
+                $this->mediaItems = $data['media'];
+            }
             return true;
         }
 
@@ -65,22 +82,22 @@ class Gallery extends Item
                 $galleryItem->delete();
             }
             $i = 1;
-            if (!empty($this->media)) {
-                foreach ($this->media as $mediaId => $ordering) {
-                    if (!$ordering || $ordering < $i) {
-                        $ordering = $i;
+            if (!empty($this->mediaItems)) {
+                foreach ($this->mediaItems as $mediaItem) {
+                    if (!$mediaItem['ordering'] || $mediaItem['ordering'] < $i) {
+                        $mediaItem['ordering'] = $i;
                         $i++;
                     } else {
-                        $i = $ordering;
+                        $i = $mediaItem['ordering'];
                     }
 
                     $galleryItem = new MediaGallery();
                     $galleryItem->item_id = $this->id;
-                    $galleryItem->ordering = $ordering;
-                    $galleryItem->media_id = $mediaId;
+                    $galleryItem->ordering = $mediaItem['ordering'];
+                    $galleryItem->media_id = $mediaItem['id'];
                     $galleryItem->save();
                 }
-                $galleryItem->reorder(false, ['item_id' => $this->id]);
+                MediaGallery::reorder(false, ['item_id' => $this->id]);
             }
             $transaction->commit();
         } catch (\Exception $e) {
@@ -97,6 +114,14 @@ class Gallery extends Item
     public function getMedia(): ActiveQuery
     {
         return $this->hasMany(Media::class, ['id' => 'media_id'])
-                    ->viaTable('media_gallery', ['item_id' => 'id']);
+            ->via('galleryItems')
+            ->joinWith(['galleryItems' => function(ActiveQuery $query) {
+                $query->orderBy('media_gallery.ordering');
+            }]);
+    }
+
+    public function getImage(): ActiveQuery
+    {
+        return $this->hasOne(Media::class, ['id' => 'image_id']);
     }
 }

@@ -9,7 +9,7 @@ declare(strict_types=1);
  */
 
 
-namespace helpers;
+namespace app\helpers;
 
 use Imagick;
 use ImagickException;
@@ -31,18 +31,18 @@ class ImageHelper
         $image->readImageBlob($content);
         switch ($type) {
             case self::RESIZE_TYPE_THUMB:
-                $image->cropThumbnailImage(env($type), env($type));
+                $image->cropThumbnailImage((int) env($type), (int) env($type));
                 break;
             case self::RESIZE_TYPE_PREVIEW:
                 $imageProps = $image->getImageGeometry();
                 $width = $imageProps['width'];
                 $height = $imageProps['height'];
                 if ($width > $height) {
-                    $newHeight = env($type);
-                    $newWidth = (env($type) / $height) * $width;
+                    $newHeight = (int) env($type);
+                    $newWidth = (int) (((int) env($type) / $height) * $width);
                 } else {
-                    $newWidth = env($type);
-                    $newHeight = (env($type) / $width) * $height;
+                    $newWidth = (int) env($type);
+                    $newHeight = (int) (((int) ($type) / $width) * $height);
                 }
                 $image->thumbnailImage($newWidth, $newHeight, true);
                 break;

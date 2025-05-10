@@ -1,0 +1,203 @@
+#main-working-area {
+    height: calc(100vh - 84px);
+}
+
+#folders-panel .uk-list > :nth-child(n+2), #folders-panel .uk-list > * > ul {
+    margin-top: 0;
+}
+
+#folders-panel li.child-level {
+    padding-left: 25px;
+    background: transparent url("/img/child_folder.png") no-repeat scroll 0 0;
+}
+
+#folders-panel ul:not(.level-0) {
+    background: transparent url("/img/child_folder_list.png") repeat-y scroll 0 25px;
+}
+
+#folders-panel li > a {
+    padding: 2px 4px;
+    display: block;
+}
+
+#folders-panel li.uk-active > a {
+    background-color: #3399ff;
+    color: #fff !important;
+}
+
+
+#drag-drop-area p {
+    height: 150px;
+    border: 2px dashed #ccc;
+    border-radius: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#file-previews {
+    overflow-y: scroll;
+    height: calc(100vh - 218px);
+}
+
+#file-previews .file-preview {
+    width: 130px;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#file-previews .file-preview img {
+    max-width: 100%;
+    display: block;
+}
+
+.media-thumb-wrapper {
+    display: block;
+    position: relative;
+}
+
+.media-thumb-wrapper.folder-wrapper {
+    text-align: center;
+    box-sizing: border-box;
+    flex-basis: 210px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.media-thumb-wrapper input[type="checkbox"],
+.media-thumb-wrapper input[type="radio"] {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 30px;
+    height: 30px;
+}
+
+.media-thumb-wrapper input[type="radio"].uk-checkbox:indeterminate {
+    background-image: none;
+    background-color: #ebebeb;
+}
+
+#files-aria > div {
+    flex-basis: 210px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    overflow: hidden;
+    text-align: center;
+    padding: 12px;
+}
+
+#files-aria > div > div img {
+    width: 210px;
+    height: auto;
+}
+
+#main-working-area > div {
+    max-height: 100%;
+}
+
+#files-panel {
+    overflow-y: scroll;
+    height: 100%;
+    overflow-x: hidden;
+    padding-right: 15px;
+}
+
+#files-aria .card {
+    text-align: center;
+    overflow-x: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.05),
+    -4px -4px 4px rgba(0, 0, 0, 0.05),
+    -4px 4px 4px rgba(0, 0, 0, 0.05),
+    4px -4px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.085);
+}
+
+#files-aria .card.selected {
+    border-color: #1e87f0;
+}
+
+#files-aria .card .card-header {
+    text-align: center;
+    padding: 5px;
+    box-sizing: border-box;
+    flex-basis: 58.6667px;
+}
+
+#spinner-modal {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    color: #1e87f0;
+}
+
+#spinner-modal.visible {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.media-manager-tabs {
+    margin-bottom: 0;
+}
+
+#image-selector-modal,
+#image-selector-modal > div {
+    height: 100vh;
+    overflow: hidden;
+}
+
+#image-selector-modal .uk-modal-body {
+    padding: 10px 0;
+    box-sizing: border-box;
+    max-height: calc(100vh - 40px);
+}
+
+#selected-image-preview {
+    margin-top: 10px;
+}
+
+.photo-preview {
+    position: relative;
+}
+
+.photo-preview > span,
+.photo-preview > a {
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 5px;
+    top: 5px;
+    position: absolute;
+    line-height: 1;
+}
+
+.uk-sortable-handle {
+    left: 5px;
+    color: #000;
+}
+
+.remove-from-gallery {
+    right: 5px;
+    cursor: pointer;
+}
+
+.view-in-gallery {
+    right: 40px;
+    cursor: pointer;
+}
+
+.edit-in-gallery {
+    right: 75px;
+    cursor: pointer;
+}

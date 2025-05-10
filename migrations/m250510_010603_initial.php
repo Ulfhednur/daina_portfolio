@@ -38,12 +38,15 @@ class m250510_010603_initial extends Migration
         $this->createTable('media', [
             'id' => $this->primaryKey()->unsigned(),
             'folder_id' => $this->integer(11)->unsigned()->notNull()->defaultValue(0),
-            'title' => $this->string(255)->notNull(),
-            'alt' => $this->string(64)->notNull(),
-            'description' => $this->string(64)->notNull(),
+            'title' => $this->string(255)->notNull()->defaultValue(''),
+            'alt' => $this->string(64)->notNull()->defaultValue(''),
+            'description' => $this->string(64)->notNull()->defaultValue(''),
             'path' => $this->string(1024)->notNull(),
             'thumbnail' => $this->string(1024)->notNull(),
             'preview' => $this->string(1024)->notNull(),
+            'url' => $this->string(1024)->notNull()->defaultValue(''),
+            'url_thumbnail' => $this->string(1024)->notNull()->defaultValue(''),
+            'url_preview' => $this->string(1024)->notNull()->defaultValue(''),
         ]);
 
         $this->createIndex('media_folder', 'media', 'folder_id');
@@ -51,11 +54,11 @@ class m250510_010603_initial extends Migration
 
         $this->createTable('media_gallery', [
             'item_id' => $this->integer(11)->unsigned()->notNull(),
-            'ordering' => $this->integer(11)->unsigned()->notNull()->defaultValue(0),
             'media_id' => $this->integer(11)->unsigned()->notNull(),
+            'ordering' => $this->integer(11)->unsigned()->notNull()->defaultValue(0),
         ]);
 
-        $this->addPrimaryKey('media_gallery_pk', 'media_gallery', ['item_id', 'ordering']);
+        $this->addPrimaryKey('media_gallery_pk', 'media_gallery', ['item_id', 'media_id']);
     }
 
     /**

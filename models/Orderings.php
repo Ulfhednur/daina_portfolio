@@ -20,13 +20,14 @@ trait Orderings
     protected bool $disableTransactions = false;
 
     /**
+     * @param bool  $transactional
+     * @param array $condition
+     *
      * @return void
      * @throws dbException
      */
-    protected function reorder(bool $transactional = true, array $condition = []): void
+    public static function reorder(bool $transactional = true, array $condition = []): void
     {
-        $disableTransactions = $this->disableTransactions;
-        $this->disableTransactions = true;
         $query = static::find()->orderBy(['ordering'=> SORT_ASC]);
         if ($condition) {
             $query->andWhere($condition);
@@ -40,6 +41,7 @@ trait Orderings
                 $i++;
                 /** @var static $item */
                 $item->ordering = $i;
+                $item->disableTransactions();
                 $item->updateAttributes(['ordering']);
             }
             if ($transactional) {
@@ -51,7 +53,6 @@ trait Orderings
             }
             throw $e;
         }
-        $this->disableTransactions = $disableTransactions;
     }
 
     /**
@@ -59,16 +60,15 @@ trait Orderings
      * @return void
      * @throws dbException
      */
-    public function updateOrdering(array $items): void
+    public static function updateOrdering(array $items): void
     {
-        $disableTransactions = $this->disableTransactions;
-        $this->disableTransactions = true;
-        $query = static::find()->where(['in', 'id', array_keys($items)]);
+        $query = static::find()->where(['in', 'id', array_column($items, 'id')]);
         $transaction = Yii::$app->db->beginTransaction();
         try {
             foreach ($query->each() as $item) {
-                /** @var static $item */
-                $item->ordering = $items[$item->id];
+                /** @var Post|Gallery $item */
+                $item->disableTransactions();
+                $item->ordering = $items[$item->id]['ordering'];
                 $item->updateAttributes(['ordering']);
             }
             $transaction->commit();
@@ -77,49 +77,18 @@ trait Orderings
             throw $e;
         }
 
-        $this->reorder();
-        $this->disableTransactions = $disableTransactions;
+        self::reorder();
     }
 
-    public function moveUp(int $id): void
+    public function disableTransactions(): static
     {
-        $disableTransactions = $this->disableTransactions;
         $this->disableTransactions = true;
-
-        $item = static::findOne(['id' => $id]);
-        $neighbour = static::findOne(['ordering' => ($item->ordering - 1)]);
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            $item->ordering--;
-            $neighbour->ordering++;
-            $item->updateAttributes(['ordering']);
-            $neighbour->updateAttributes(['ordering']);
-            $transaction->commit();
-        } catch (Exception $e) {
-            $transaction->rollBack();
-            throw $e;
-        }
-        $this->disableTransactions = $disableTransactions;
+        return $this;
     }
 
-    public function moveDown(int $id): void
+    public function enableTransactions(): static
     {
-        $disableTransactions = $this->disableTransactions;
-        $this->disableTransactions = true;
-
-        $item = static::findOne(['id' => $id]);
-        $neighbour = static::findOne(['ordering' => ($item->ordering + 1)]);
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            $item->ordering++;
-            $neighbour->ordering--;
-            $item->updateAttributes(['ordering']);
-            $neighbour->updateAttributes(['ordering']);
-            $transaction->commit();
-        } catch (Exception $e) {
-            $transaction->rollBack();
-            throw $e;
-        }
-        $this->disableTransactions = $disableTransactions;
+        $this->disableTransactions = false;
+        return $this;
     }
 }

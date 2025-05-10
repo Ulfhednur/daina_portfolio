@@ -9,11 +9,11 @@ declare(strict_types=1);
  */
 
 
-namespace services;
+namespace app\services;
 
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
-use helpers\ImageHelper;
+use app\helpers\ImageHelper;
 
 class FileService
 {
@@ -38,17 +38,18 @@ class FileService
         $this->bucket = env('S3_BUCKET');
     }
 
-    protected function uploadFile(string $destination, string $content, string $contentType): void
+    protected function uploadFile(string $destination, string $content, string $contentType): string
     {
-        $this->s3Client->putObject(
+        $res = $this->s3Client->putObject(
             [
                 'Bucket' => $this->bucket,
                 'Key' => $this->bucket . $destination,
                 'Body' => $content,
-                'ACL' => 'public',
+                'ACL' => 'public-read',
                 'ContentType' => $contentType,
             ]
         );
+        return $res['ObjectURL'];
     }
 
     public static function prepareThumbPaths(string $destination):array
@@ -56,20 +57,22 @@ class FileService
         $pathInfo = pathinfo($destination);
 
         return [
-            'thumb' => $pathInfo['dirname'] . '/thumb_' . $pathInfo['basename'] . '.webp',
-            'preview' => $pathInfo['dirname'] . '/preview_' . $pathInfo['basename'] . '.webp',
+            'thumb' => $pathInfo['dirname'] . '/thumb_' . $pathInfo['filename'] . '.webp',
+            'preview' => $pathInfo['dirname'] . '/preview_' . $pathInfo['filename'] . '.webp',
         ];
     }
 
-    public function uploadImage(string $destination, string $content, string $contentType): void
+    public function uploadImage(string $destination, string $content, string $contentType): array
     {
         $destinations = self::prepareThumbPaths($destination);
-        $this->uploadFile($destination, $content, $contentType);
-        $this->uploadFile($destinations['thumb'], ImageHelper::resize($content, ImageHelper::RESIZE_TYPE_THUMB), 'image/webp');
-        $this->uploadFile($destinations['preview'], ImageHelper::resize($content, ImageHelper::RESIZE_TYPE_PREVIEW), 'image/webp');
+        return [
+            'url' => $this->uploadFile($destination, $content, $contentType),
+            'url_thumbnail' => $this->uploadFile($destinations['thumb'], ImageHelper::resize($content, ImageHelper::RESIZE_TYPE_THUMB), 'image/webp'),
+            'url_preview' => $this->uploadFile($destinations['preview'], ImageHelper::resize($content, ImageHelper::RESIZE_TYPE_PREVIEW), 'image/webp')
+        ];
     }
 
-    public function recreateThumbs(string $destination): void
+    public function recreateThumbs(string $destination): array
     {
         $destinations = self::prepareThumbPaths($destination);
 
@@ -77,8 +80,12 @@ class FileService
             'Bucket' => $this->bucket,
             'Key' => $this->bucket . $destination,
         ]);
-        $this->uploadFile($destinations['thumb'], ImageHelper::resize($image->get('body'), ImageHelper::RESIZE_TYPE_THUMB), 'image/webp');
-        $this->uploadFile($destinations['preview'], ImageHelper::resize($image->get('body'), ImageHelper::RESIZE_TYPE_PREVIEW), 'image/webp');
+
+        return [
+            'url' => $this->s3Client->getObjectUrl($this->bucket, $this->bucket . $destination),
+            'url_thumbnail' =>  $this->uploadFile($destinations['thumb'], ImageHelper::resize($image->get('body'), ImageHelper::RESIZE_TYPE_THUMB), 'image/webp'),
+            'url_preview' => $this->uploadFile($destinations['preview'], ImageHelper::resize($image->get('body'), ImageHelper::RESIZE_TYPE_PREVIEW), 'image/webp')
+        ];
     }
 
     public function removeImage(string $destination): void
