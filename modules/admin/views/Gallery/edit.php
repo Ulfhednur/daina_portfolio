@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @license      GNU/GPL
  */
 
-use app\assets\admin\AdminAsset;
+use app\assets\Admin\AdminAsset;
 use app\assets\DateTimePicker\DateTimePickerAsset;
 use app\models\Gallery;
 use app\widgets\AdminToolbar\EditToolbar;

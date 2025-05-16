@@ -5,7 +5,7 @@
  * @license https://www.yiiframework.com/license/
  */
 
-namespace app\assets\FileManager;
+namespace app\assets\Uikit;
 
 use yii\web\AssetBundle;
 
@@ -15,18 +15,19 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class FileManagerAsset extends AssetBundle
+class UikitThemeAsset extends AssetBundle
 {
-    public $sourcePath = '@app/assets/FileManager';
+    public $sourcePath = '@app/assets/Uikit/src';
 
     public $css = [
-        'css/filemanager.css',
+        'less/uikit.less',
+        'less/uikit.theme.less',
     ];
     public $js = [
-        'js/filemanager.js',
+        'js/uikit.min.js',
+        'js/uikit-icons.min.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',
-        'app\assets\Uikit\UikitAsset',
     ];
 }

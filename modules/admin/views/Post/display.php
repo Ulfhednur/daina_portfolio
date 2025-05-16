@@ -9,7 +9,7 @@ declare(strict_types=1);
  * @license      GNU/GPL
  */
 
-use app\assets\admin\AdminAsset;
+use app\assets\Admin\AdminAsset;
 use app\models\Post;
 use app\widgets\AdminPagination;
 use app\widgets\AdminToolbar\ListToolbar;

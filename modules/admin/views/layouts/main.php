@@ -11,7 +11,7 @@ declare(strict_types=1);
 /** @var yii\web\View $this */
 /** @var string $content */
 
-use app\assets\uikit\UikitAsset;
+use app\assets\Uikit\UikitAsset;
 use app\widgets\Alert;
 use app\helpers\appHelper;
 use app\widgets\ImageSelector\ImageSelector;

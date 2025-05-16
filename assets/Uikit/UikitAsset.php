@@ -5,7 +5,7 @@
  * @license https://www.yiiframework.com/license/
  */
 
-namespace app\assets\admin;
+namespace app\assets\Uikit;
 
 use yii\web\AssetBundle;
 
@@ -15,16 +15,18 @@ use yii\web\AssetBundle;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class AdminAsset extends AssetBundle
+class UikitAsset extends AssetBundle
 {
-    public $sourcePath = '@app/assets/admin';
+    public $sourcePath = '@app/assets/Uikit/src';
 
-    public $css = ['css/admin.css'];
-
-    public $js = ['js/admin.js'];
+    public $css = [
+        'less/uikit.less',
+    ];
+    public $js = [
+        'js/uikit.min.js',
+        'js/uikit-icons.min.js',
+    ];
     public $depends = [
         'yii\web\JqueryAsset',
-        'app\assets\uikit\UikitAsset',
-        'app\assets\DateTimePicker\DateTimePickerAsset',
     ];
 }

@@ -6590,7 +6590,7 @@
       }
     }
     function init(App) {
-      trigger(document, "uikit:init", App);
+      trigger(document, "Uikit:init", App);
       if (document.body) {
         apply(document.body, connect);
       }
