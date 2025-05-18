@@ -33,7 +33,7 @@ AdminAsset::register($this);
     ]); ?>
 
     <?=EditToolbar::widget([
-        'options' => ['media' =>  true]
+        'options' => ['media' =>  false]
     ]) ?>
     <div class="uk-container uk-container-expand">
         <div class="uk-grid-small" uk-grid>

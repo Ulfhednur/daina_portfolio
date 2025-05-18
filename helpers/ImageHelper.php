@@ -38,13 +38,14 @@ class ImageHelper
                 $width = $imageProps['width'];
                 $height = $imageProps['height'];
                 if ($width > $height) {
-                    $newHeight = (int) env($type);
-                    $newWidth = (int) (((int) env($type) / $height) * $width);
-                } else {
                     $newWidth = (int) env($type);
-                    $newHeight = (int) (((int) ($type) / $width) * $height);
+                    $newHeight = 0; //(int) (((int) env($type) / $width) * $height);
+                } else {
+                    $newHeight = (int) env($type);
+                    $newWidth = 0;//(int) (((int) env($type) / $height) * $width);
                 }
-                $image->thumbnailImage($newWidth, $newHeight, true);
+
+                $image->thumbnailImage($newWidth, $newHeight);
                 break;
         }
 

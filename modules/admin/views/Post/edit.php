@@ -66,6 +66,7 @@ DateTimePickerAsset::register($this);
                         'showTrailingSpace' => true,
                         'mode' => 'xml',
                         'lineNumbers' => true,
+                        'lineWrapping' => true,
                         'matchBrackets' => true,
                         'autoCloseBrackets' => true,
                         'autoCloseTags' => true,

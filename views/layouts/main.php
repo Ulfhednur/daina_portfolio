@@ -1,34 +1,41 @@
 <?php
+declare(strict_types=1);
+/**
+ * @version      1.0
+ * @author       Tempadmin
+ * @package      Daina portfolio
+ * @copyright    Copyright (C) 2025 Daina. All rights reserved.
+ * @license      GNU/GPL
+ */
 
 /**
  * @var yii\web\View $this
  * @var string       $content
  */
 
-use app\assets\Uikit\UikitThemeAsset;
-use app\widgets\Alert;
+use app\assets\Frontend\FrontendAsset;
 use yii\helpers\Html;
 
-UikitThemeAsset::register($this);
+FrontendAsset::register($this);
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1, shrink-to-fit=no']);
 $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
-$this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>" class="h-100">
+<html lang="<?= Yii::$app->language ?>" class="uk-height-1-1">
 <head>
-    <title><?= Html::encode($this->title) ?></title>
+    <title><?= Yii::t('app', Yii::$app->name)?><?=$this->title ? ' - ' . $this->title : ''?></title>
     <?php $this->head() ?>
 </head>
-<body class="d-flex flex-column h-100">
+<body class="uk-flex uk-flex-column uk-flex-between uk-height-1-1">
+<?= $this->render('@app/views/layouts/menu.php') ?>
 <?php $this->beginBody() ?>
 
-<main id="main" class="flex-shrink-0" role="main">
+<main id="main" class="uk-flex-shrink-0" role="main">
     <div class="container">
         <?php if (!empty($this->params['breadcrumbs'])): ?>
         <?php endif ?>
@@ -36,14 +43,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     </div>
 </main>
 
-<footer id="footer" class="mt-auto py-3 bg-light">
-    <div class="container">
-        <div class="row text-muted">
-            <div class="col-md-6 text-center text-md-start">&copy; My Company <?= date('Y') ?></div>
-            <div class="col-md-6 text-center text-md-end"><?= Yii::powered() ?></div>
-        </div>
-    </div>
-</footer>
+<div class="fake-footer"></div>
 
 <?php $this->endBody() ?>
 </body>

@@ -28,17 +28,21 @@ class ContactForm extends Model
             // email has to be a valid email address
             ['email', 'email'],
             // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha'],
+ //           ['verifyCode', 'captcha'],
         ];
     }
 
     /**
      * @return array customized attribute labels
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'verifyCode' => 'Verification Code',
+            'name' => 'Имя',
+            'email' => 'Email',
+            'subject' => 'Тема',
+            'body' => 'Сообщение',
         ];
     }
 

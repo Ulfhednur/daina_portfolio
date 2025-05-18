@@ -36,7 +36,7 @@ use app\widgets\ImageSelector\ImageSelector;
                             'name' => 'img',
                             'buttonText' => 'Фотографии',
                             'buttonClass' => 'uk-button',
-                            'galleryId' => $options['galleryId'],
+                            'galleryId' => array_key_exists('galleryId', $options) ? $options['galleryId'] : 0,
                         ]) ?>
                     </li>
                 <?php } ?>

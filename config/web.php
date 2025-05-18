@@ -11,19 +11,21 @@ $config = [
     'language' => 'ru-RU',
     'name' => env('APP_NAME'),
     'homeUrl' => env('HOME_URL'),
+    'defaultRoute' => 'site/index',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'modules' => [
         'admin' => [
             'class' => \app\modules\admin\Module::class,
+            'defaultRoute' => 'admin/auth/login',
         ],
     ],
     'components' => [
         'assetManager' => [
             'converter' => [
-                'class' => 'yii\web\AssetConverter',
+                'class' => \yii\web\AssetConverter::class,
                 'commands' => [
                     'less' => ['css', 'lessc {from} {to} --no-color'],
                 ],
@@ -31,16 +33,29 @@ $config = [
             'linkAssets' => YII_ENV_DEV,
             'appendTimestamp' => true,
         ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => \yii\i18n\PhpMessageSource::class,
+                    'basePath' => '@app/messages',
+                    'sourceLanguage' => 'ru-RU',
+                    'fileMap' => [
+                        'app' => 'app.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
+            ],
+        ],
         'request' => [
             'cookieValidationKey' => env('COOKIE_KEY'),
-            'enableCsrfValidation'=> false,
-            'enableCsrfCookie'=> false,
+            'enableCsrfValidation' => false,
+            'enableCsrfCookie' => false,
         ],
         'cache' => [
-            'class' => yii\caching\FileCache::class,
+            'class' => \yii\caching\FileCache::class,
         ],
         'user' => [
-            'identityClass' => app\modules\admin\models\User::class,
+            'identityClass' => \app\modules\admin\models\User::class,
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -55,7 +70,7 @@ $config = [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => yii\log\FileTarget::class,
+                    'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
             ],
@@ -164,6 +179,32 @@ $config = [
                         'POST delete' => 'delete',
                     ],
                 ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'pluralize' => false,
+                    'controller' => 'gallery',
+                    'tokens' => [
+                        '{alias}' => '<alias:\w+[\w+-]*>',
+                    ],
+                    'patterns' => [
+                        'GET' => 'display',
+                        'GET {alias}' => 'show',
+                    ],
+                ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'pluralize' => false,
+                    'controller' => 'blog',
+                    'tokens' => [
+                        '{alias}' => '<alias:\w+[\w+-]*>',
+                    ],
+                    'patterns' => [
+                        'GET' => 'display',
+                        'GET {alias}' => 'show',
+                    ],
+                ],
+                '' => 'site/index',
+                'contacts' => 'site/contacts',
             ],
         ],
     ],

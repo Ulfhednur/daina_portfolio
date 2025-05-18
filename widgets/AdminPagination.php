@@ -27,19 +27,24 @@ class AdminPagination extends Widget
         echo LinkPager::widget([
             'pagination' => $this->options['pagination'],
             'options' => [
-                'class' => 'pagination justify-content-center'
+                'class' => 'uk-flex uk-flex-center',
             ],
+            'listOptions' => ['class' => 'uk-pagination'],
             'linkContainerOptions' => ['class' => 'page-item'],
             'linkOptions' => ['class' => 'page-link'],
-            'activePageCssClass' => 'active',
-            'disabledPageCssClass' => 'disabled',
+            'prevPageCssClass' => 'uk-pagination-previous',
+            'prevPageLabel' => '<span uk-pagination-previous></span>',
+            'nextPageCssClass' => 'uk-pagination-next',
+            'nextPageLabel' => '<span uk-pagination-next></span>',
+            'activePageCssClass' => 'uk-active',
+            'disabledPageCssClass' => 'ul-disabled',
             'disabledListItemSubTagOptions' => [
-                'tag' => 'a',
-                'class' => 'page-link',
-                'aria-disabled' => 'true'
+                'tag' => 'span',
+                'class' => '',
+                'aria-disabled' => 'true',
             ],
-            'firstPageLabel' => 'В начало',
-            'lastPageLabel' => 'В конец',
+            'firstPageLabel' => false,
+            'lastPageLabel' => false,
             'hideOnSinglePage' => true,
         ]);
         echo PHP_EOL . Html::endTag('nav');
