@@ -7,9 +7,9 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\web\Controller;
 use yii\web\ErrorAction;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 class BlogController extends PortfolioController
 {
@@ -89,7 +89,7 @@ class BlogController extends PortfolioController
             'published' => 1,
         ]);
         if (empty($item)) {
-            return new HttpException(404, Yii::t('app', 'Галерея не найдена'));
+            throw new NotFoundHttpException(404, Yii::t('error', 'Статья не найдена'));
         }
         Yii::$app->view->registerMetaTag([
                 'name' => 'description',

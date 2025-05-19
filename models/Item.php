@@ -38,16 +38,21 @@ use yii\helpers\BaseInflector;
  */
 abstract class Item extends ActiveRecord
 {
+    /** Подключаем сортировку */
     use OrderingTrait;
 
+    /** Типы записей */
     const string ITEM_TYPE_PAGE = 'page';
     const string ITEM_TYPE_POST = 'post';
     const string ITEM_TYPE_GALLERY = 'gallery';
 
+    /** @var string тип текущей записи */
     protected static string $itemType;
 
+    /** @var bool флаг отключения транзакций, для обработки нескольких записей в одной транзакции */
     protected bool $disableTransactions = false;
 
+    /** @var string[] Переводимые поля */
     protected array $translatable = [
         'title', 'subtitle', 'description', 'seo_description', 'seo_title', 'subtitle',
     ];
@@ -162,6 +167,13 @@ abstract class Item extends ActiveRecord
         ];
     }
 
+    /**
+     * Поиск
+     *
+     * @param string|null $search
+     *
+     * @return ActiveQuery
+     */
     public static function Search(?string $search)
     {
         $query = static::find();
@@ -171,6 +183,12 @@ abstract class Item extends ActiveRecord
         return $query;
     }
 
+    /**
+     * Магия. Подцепляем суффикс языка к полю
+     * @param $name
+     *
+     * @return mixed|null
+     */
     public function __get($name)
     {
         $lang = langHelper::getCurrentLang();

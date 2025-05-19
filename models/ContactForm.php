@@ -1,4 +1,12 @@
 <?php
+declare(strict_types=1);
+/**
+ * @version      1.0
+ * @author       Tempadmin
+ * @package      Daina portfolio
+ * @copyright    Copyright (C) 2025 Daina. All rights reserved.
+ * @license      GNU/GPL
+ */
 
 namespace app\models;
 
@@ -6,15 +14,15 @@ use Yii;
 use yii\base\Model;
 
 /**
- * ContactForm is the model behind the contact form.
+ * Форма контактов
  */
 class ContactForm extends Model
 {
-    public $name;
-    public $email;
-    public $subject;
-    public $body;
-    public $verifyCode;
+    public string $name;
+    public string $email;
+    public string $subject;
+    public string $body;
+    public ?string $verifyCode;
 
 
     /**
@@ -23,12 +31,9 @@ class ContactForm extends Model
     public function rules()
     {
         return [
-            // name, email, subject and body are required
             [['name', 'email', 'subject', 'body'], 'required'],
-            // email has to be a valid email address
             ['email', 'email'],
-            // verifyCode needs to be entered correctly
- //           ['verifyCode', 'captcha'],
+            //           ['verifyCode', 'captcha'],
         ];
     }
 
@@ -39,10 +44,10 @@ class ContactForm extends Model
     {
         return [
             'verifyCode' => 'Verification Code',
-            'name' => Yii::t('app','Имя'),
+            'name' => Yii::t('app', 'Имя'),
             'email' => 'Email',
-            'subject' => Yii::t('app','Тема'),
-            'body' => Yii::t('app','Сообщение'),
+            'subject' => Yii::t('app', 'Тема'),
+            'body' => Yii::t('app', 'Сообщение'),
         ];
     }
 

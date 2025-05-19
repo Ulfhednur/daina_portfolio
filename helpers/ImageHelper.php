@@ -14,6 +14,9 @@ namespace app\helpers;
 use Imagick;
 use ImagickException;
 
+/**
+ * Пережимание картинок
+ */
 class ImageHelper
 {
     const string RESIZE_TYPE_THUMB = 'IMAGE_THUMB_SIZE';

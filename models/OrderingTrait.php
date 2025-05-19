@@ -15,11 +15,16 @@ use Exception;
 use Yii;
 use yii\db\Exception as dbException;
 
+/**
+ * Сортировка
+ */
 trait OrderingTrait
 {
     protected bool $disableTransactions = false;
 
     /**
+     * Пересортировать
+     *
      * @param bool  $transactional
      * @param array $condition
      *
@@ -28,7 +33,7 @@ trait OrderingTrait
      */
     public static function reorder(bool $transactional = true, array $condition = []): void
     {
-        $query = static::find()->orderBy(['ordering'=> SORT_ASC]);
+        $query = static::find()->orderBy(['ordering' => SORT_ASC]);
         if ($condition) {
             $query->andWhere($condition);
         }
@@ -56,7 +61,10 @@ trait OrderingTrait
     }
 
     /**
+     * Сохранить порядок сортировки
+     *
      * @param array $items
+     *
      * @return void
      * @throws dbException
      */
@@ -80,12 +88,22 @@ trait OrderingTrait
         self::reorder();
     }
 
+    /**
+     * Отключить транзакции модели
+     *
+     * @return $this
+     */
     public function disableTransactions(): static
     {
         $this->disableTransactions = true;
         return $this;
     }
 
+    /**
+     * Включить транзакции модели
+     *
+     * @return $this
+     */
     public function enableTransactions(): static
     {
         $this->disableTransactions = false;

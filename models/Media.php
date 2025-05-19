@@ -140,18 +140,44 @@ class Media extends ActiveRecord
      */
     public function beforeDelete(): bool
     {
+        if ($this->getRelatedItems()->count() > 0) {
+            return false;
+        }
+
         $file = new FileService();
         $file->removeImage($this->path);
+
+        foreach ($this->getGalleryItems()->each() as $item) {
+            $item->delete();
+        }
 
         return parent::beforeDelete();
     }
 
+    /**
+     * Связанные записи MediaGallery
+     *
+     * @return ActiveQuery
+     */
     public function getGalleryItems(): ActiveQuery
     {
         return $this->hasMany(MediaGallery::class, ['media_id' => 'id']);
     }
 
     /**
+     * Записи Items, использующие картинку как превью записи
+     *
+     * @return ActiveQuery
+     */
+    public function getRelatedItems(): ActiveQuery
+    {
+        return $this->hasMany(Item::class, ['image_id' => 'id']);
+    }
+
+    /**
+     * Унифицируем поле каталога
+     * подставляем код языка к переводимым полям
+     *
      * @inheritDoc
      */
     public function __get($name)

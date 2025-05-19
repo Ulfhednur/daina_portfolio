@@ -13,8 +13,14 @@ namespace app\models;
 
 use yii\db\ActiveQuery;
 
+/**
+ * Запись блога
+ */
 class Post extends Item
 {
+    /**
+     * @inheritDoc
+     */
     protected static string $itemType = parent::ITEM_TYPE_POST;
 
     /**
@@ -26,7 +32,7 @@ class Post extends Item
             parent::rules(),
             [
                 [['image_id'], 'exist', 'targetClass' => Media::class, 'targetAttribute' => 'id'],
-                ['created_date', 'filter', 'filter' => function ($value) {
+                ['created_date', 'filter', 'filter' => function($value) {
                     if (preg_match('/[0-9]{2}.[0-9]{2}.[0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2}/', $value)) {
                         return \DateTime::createFromFormat('d.m.Y H:i:s', $value)->format('Y-m-d H:i:s');
                     }
@@ -39,6 +45,8 @@ class Post extends Item
     }
 
     /**
+     * Получение картинки поста
+     *
      * @return ActiveQuery
      */
     public function getImage(): ActiveQuery
