@@ -49,18 +49,16 @@ class SiteController extends PortfolioController
      */
     public function actions(): array
     {
+        $error = [
+            'class' => ErrorAction::class,
+        ];
+
         $path = explode('/', parse_url(Yii::$app->request->absoluteUrl, PHP_URL_PATH));
         if (!empty($path[1]) && $path[1] == env('ADMIN_URL')) {
-            $error = [
-                'class' => ErrorAction::class,
-                'layout' => '@app/modules/admin/views/layouts/main.php',
-                'view' => '@app/modules/admin/views/error.php',
-            ];
-        } else {
-            $error = [
-                'class' => ErrorAction::class,
-            ];
+            $error['layout'] = '@app/modules/admin/views/layouts/main.php';
+            $error['view'] = '@app/modules/admin/views/error.php';
         }
+
         return [
             'error' => $error,
         ];

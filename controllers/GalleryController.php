@@ -8,6 +8,7 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\ErrorAction;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 class GalleryController extends PortfolioController
 {
@@ -81,7 +82,7 @@ class GalleryController extends PortfolioController
             'published' => 1,
         ]);
         if (empty($item)) {
-            return new HttpException(404, Yii::t('app', 'Галерея не найдена'));
+            throw new NotFoundHttpException(Yii::t('error', 'Галерея не найдена'));
         }
         return $this->render('@app/views/gallery/show', [
             'item' => $item,

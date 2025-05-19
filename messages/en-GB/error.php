@@ -11,6 +11,7 @@ declare(strict_types=1);
 return [
     'Галерея не найдена' => 'Gallery not found',
     'Страница не найдена.' => 'Page not found',
+    'Статья не найдена.' => 'Article not found',
     'Указанная выше ошибка произошла во время обработки вашего запроса веб-сервером.' => 'The above error occurred while the Web server was processing your request.',
     'Пожалуйста, свяжитесь с нами, если вы считаете, что это ошибка сервера. Спасибо.' => 'Please contact us if you think this is a server error. Thank you.'
 ];

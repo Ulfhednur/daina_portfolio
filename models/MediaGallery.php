@@ -17,7 +17,8 @@ use yii\db\Query;
 use yii\helpers\BaseInflector;
 
 /**
- * Class Media
+ * Class MediaGallery
+ * Отношение галерея - картинка, многие ко многим, с сортировкой
  *
  * @property int        $item_id
  * @property int        $ordering
@@ -27,6 +28,7 @@ use yii\helpers\BaseInflector;
  */
 class MediaGallery extends ActiveRecord
 {
+    /** Подключаем сортировку */
     use OrderingTrait;
 
     /**
@@ -66,6 +68,12 @@ class MediaGallery extends ActiveRecord
         ];
     }
 
+    /**
+     * Удаление связи с пересортировкой
+     *
+     * @return void
+     * @throws \Throwable|\yii\db\Exception|\yii\db\StaleObjectException
+     */
     public function delete(): void
     {
         $cond = [
@@ -75,8 +83,13 @@ class MediaGallery extends ActiveRecord
         self::reorder(true, $cond);
     }
 
+    /**
+     * Получение связанных медиа
+     *
+     * @return ActiveQuery
+     */
     public function getMedia(): ActiveQuery
     {
-        return $this->hasMany(Media::class, ['id' => 'media_id']);
+        return $this->hasOne(Media::class, ['id' => 'media_id']);
     }
 }

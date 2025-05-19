@@ -17,6 +17,7 @@ use yii\helpers\BaseInflector;
 
 /**
  * Class Media
+ * Каталоги файлов. Виртуальные, для удобства организации
  *
  * @property int        $id
  * @property int        $parent_id
@@ -27,7 +28,9 @@ use yii\helpers\BaseInflector;
  */
 class Folder extends ActiveRecord
 {
+    /** @var array $children вложенные каталоги */
     public array $children = [];
+
     /**
      * @inheritDoc
      */
@@ -91,16 +94,33 @@ class Folder extends ActiveRecord
         return parent::beforeDelete();
     }
 
+    /**
+     * Файлы каталога
+     *
+     * @return ActiveQuery
+     */
     public function getFiles(): ActiveQuery
     {
         return $this->hasMany(Media::class, ['folder_id' => 'id']);
     }
 
+    /**
+     * Вложенные каталоги
+     *
+     * @return ActiveQuery
+     */
     public function getChildren(): ActiveQuery
     {
         return $this->hasMany(self::class, ['parent_id' => 'id']);
     }
 
+    /**
+     * Путь к каталогу
+     *
+     * @param int $id
+     *
+     * @return array
+     */
     public static function getChain(int $id): array
     {
         $items = [];
@@ -120,6 +140,11 @@ class Folder extends ActiveRecord
         return array_reverse($items);
     }
 
+    /**
+     * Дерево каталогов
+     *
+     * @return object[]
+     */
     public static function getTree(): array
     {
         return [
@@ -132,6 +157,15 @@ class Folder extends ActiveRecord
         ];
     }
 
+    /**
+     * Преобразование списка в дерево.
+     * Лучше рекурсивная функция, чем рекурсивный запрос...
+     *
+     * @param array $rows
+     * @param int   $parentId
+     *
+     * @return array
+     */
     protected static function formTree(array $rows, int $parentId = 0): array
     {
         $items = [];
@@ -146,6 +180,11 @@ class Folder extends ActiveRecord
         return $items;
     }
 
+    /**
+     * Корневой каталог
+     *
+     * @return \stdClass
+     */
     public static function getRoot(): \stdClass
     {
         return (object) [

@@ -11,7 +11,13 @@ declare(strict_types=1);
 
 namespace app\models;
 
+/**
+ * Страница
+ */
 class Page extends Item
 {
+    /**
+     * @inheritDoc
+     */
     protected static string $itemType = parent::ITEM_TYPE_PAGE;
 }

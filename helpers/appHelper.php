@@ -15,6 +15,9 @@ use Random\RandomException;
 use Yii;
 use yii\db\Exception;
 
+/**
+ * Утилиты
+ */
 abstract class appHelper
 {
 

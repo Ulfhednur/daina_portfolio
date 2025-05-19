@@ -112,11 +112,33 @@ class Gallery extends Item
         }
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function beforeDelete(): bool
+    {
+        foreach ($this->getGalleryItems()->each() as $item) {
+            $item->delete();
+        }
+
+        return parent::beforeDelete();
+    }
+
+    /**
+     * Список связанных записей MediaGallery
+     *
+     * @return ActiveQuery
+     */
     public function getGalleryItems(): ActiveQuery
     {
         return $this->hasMany(MediaGallery::class, ['item_id' => 'id']);
     }
 
+    /**
+     * Список связанных записей Media
+     *
+     * @return ActiveQuery
+     */
     public function getMedia(): ActiveQuery
     {
         return $this->hasMany(Media::class, ['id' => 'media_id'])
@@ -126,6 +148,11 @@ class Gallery extends Item
             }]);
     }
 
+    /**
+     * Изображение галереи
+     *
+     * @return ActiveQuery
+     */
     public function getImage(): ActiveQuery
     {
         return $this->hasOne(Media::class, ['id' => 'image_id']);
