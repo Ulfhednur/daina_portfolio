@@ -26,6 +26,7 @@
     left: 50%;
     top: 20vh;
     transform: translateX(-50%);
+    width: 100%;
 }
 
 .homepage .main-header .uk-navbar-nav > li > a {
@@ -45,7 +46,10 @@
 }
 
 .homepage .logo a,
-.homepage .logo a:hover {
+.homepage .logo a:hover,
+.homepage .lang-switcher > .uk-navbar-item a,
+.homepage .lang-switcher > .uk-navbar-item a:hover,
+.homepage .lang-switcher > .uk-navbar-item a:visited {
     color: #fff;
 }
 
@@ -85,3 +89,16 @@ h3 > a:hover {
     text-decoration: none;
 }
 
+hr.read-more {
+    display: none;
+}
+
+.lang-switcher .uk-grid-divider.uk-grid-small > *,
+.lang-switcher .uk-grid-divider.uk-grid-column-small > * {
+    padding-left: 10px;
+}
+
+.lang-switcher .uk-grid-divider.uk-grid-small > :not(.uk-first-column)::before,
+.lang-switcher .uk-grid-divider.uk-grid-column-small > :not(.uk-first-column)::before {
+    left: 5px;
+}

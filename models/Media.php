@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace app\models;
 
+use app\helpers\langHelper;
 use app\services\FileService;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -22,8 +23,11 @@ use yii\helpers\BaseInflector;
  * @property int    $id
  * @property int    $folder_id
  * @property string $title
+ * @property string $title_en
  * @property string $alt
+ * @property string $alt_en
  * @property string $description
+ * @property string $description_en
  * @property string $path
  * @property string $thumbnail
  * @property string $preview
@@ -38,6 +42,10 @@ class Media extends ActiveRecord
     public string $imageContent;
 
     public string $imageMime;
+
+    protected array $translatable = [
+        'description', 'title', 'alt',
+    ];
 
     /**
      * @inheritDoc
@@ -62,6 +70,7 @@ class Media extends ActiveRecord
     {
         return [
             [['description', 'title', 'alt'], 'string', 'max' => 64],
+            [['description_en', 'title_en', 'alt_en'], 'string', 'max' => 64],
             [['path', 'thumbnail', 'preview', 'url', 'url_thumbnail', 'url_preview'], 'string', 'max' => 1024],
             [['folder_id'], 'integer'],
             [['path', 'thumbnail', 'preview'], 'required'],
@@ -78,8 +87,11 @@ class Media extends ActiveRecord
             'id' => 'id',
             'folder_id' => 'Каталог',
             'title' => 'Аттрибут title',
+            'title_en' => 'Аттрибут title (En)',
             'alt' => 'Аттрибут alt',
+            'alt_en' => 'Аттрибут alt (En)',
             'description' => 'Краткое описание (64 символа)',
+            'description_en' => 'Краткое описание (64 символа) (En)',
             'path' => 'Имя файла в каталоге',
         ];
     }
@@ -146,6 +158,10 @@ class Media extends ActiveRecord
     {
         if ($name == 'parent_id') {
             $name = 'folder_id';
+        }
+        $lang = langHelper::getCurrentLang();
+        if (!langHelper::isLangDefault() && in_array($name, $this->translatable)) {
+            $name .= '_' . $lang;
         }
         return parent::__get($name);
     }

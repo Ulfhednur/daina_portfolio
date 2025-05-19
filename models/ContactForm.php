@@ -39,19 +39,21 @@ class ContactForm extends Model
     {
         return [
             'verifyCode' => 'Verification Code',
-            'name' => 'Имя',
+            'name' => Yii::t('app','Имя'),
             'email' => 'Email',
-            'subject' => 'Тема',
-            'body' => 'Сообщение',
+            'subject' => Yii::t('app','Тема'),
+            'body' => Yii::t('app','Сообщение'),
         ];
     }
 
     /**
      * Sends an email to the specified email address using the information collected by this model.
+     *
      * @param string $email the target email address
+     *
      * @return bool whether the model passes validation
      */
-    public function contact($email)
+    public function contact(string $email): bool
     {
         if ($this->validate()) {
             Yii::$app->mailer->compose()

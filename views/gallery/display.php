@@ -10,10 +10,13 @@ declare(strict_types=1);
  */
 
 use app\models\Gallery;
+use yii\helpers\Url;
 
 /**
- * @var Gallery[] $items
+ * @var yii\web\View $this
+ * @var Gallery[]    $items
  */
+$this->params['lang_path'] = ['gallery/display'];
 ?>
 <section class="uk-section uk-section-primary">
     <div class="uk-container">
@@ -25,13 +28,14 @@ use app\models\Gallery;
                 <?php foreach ($items as $item) { ?>
                     <div class="gallery-item">
                         <div class="gallery-image-wrapper">
-                            <a href="/gallery/<?= $item->alias ?>" class="gallery-image-link">
+                            <a href="<?= Url::to(['gallery/show', 'alias' => $item->alias]) ?>"
+                               class="gallery-image-link">
                                 <img src="<?= $item->image->url_preview ?>" alt="<?= $item->title ?>">
                             </a>
                         </div>
                         <h3 class="uk-h3 uk-text-uppercase">
                             <a class="uk-display-block uk-width-1-1"
-                               href="/gallery/<?= $item->alias ?>"><?= $item->title ?>
+                               href="<?= Url::to(['gallery/show', 'alias' => $item->alias]) ?>"><?= $item->title ?>
                                 <?php if (!empty($item->subtitle)) { ?>
                                     <div class="uk-text-small uk-text-muted"><?= $item->subtitle ?></div>
                                 <?php } ?>

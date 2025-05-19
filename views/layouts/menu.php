@@ -10,29 +10,48 @@ declare(strict_types=1);
 
 /**
  * @var yii\web\View $this
+ * @var array        $langData
  */
+
 use app\helpers\appHelper;
+use app\helpers\langHelper;
+use yii\helpers\Url;
+
 ?>
-<header class="main-header uk-text-center uk-flex uk-flex-column uk-flex-between uk-section">
-    <h2 class="logo"><a href="/"><?= Yii::t('app', Yii::$app->name)?></a></h2>
-    <nav class="uk-navbar-container uk-navbar-transparent">
-        <div uk-navbar>
-            <div class="uk-navbar-center">
-                <ul class="uk-navbar-nav">
-                    <li<?=appHelper::isMenuActive($this, 'gallery') ? ' class="uk-active"' : ''?>>
-                        <a href="/gallery"><?= Yii::t('app', 'Галерея')?></a>
-                    </li>
-                    <li<?=appHelper::isMenuActive($this, 'contacts') ? ' class="uk-active"' : ''?>>
-                        <a href="/contacts"><?= Yii::t('app', 'Контакты')?></a>
-                    </li>
-                    <li<?=appHelper::isMenuActive($this, 'about') ? ' class="uk-active"' : ''?>>
-                        <a href="/about"><?= Yii::t('app', 'О себе')?></a>
-                    </li>
-                    <li<?=appHelper::isMenuActive($this, 'blog') ? ' class="uk-active"' : ''?>>
-                        <a href="/blog"><?= Yii::t('app', 'Заметки')?></a>
-                    </li>
-                </ul>
+<header class="main-header uk-text-center uk-section">
+    <div class="uk-container uk-container-xlarge uk-flex uk-flex-column uk-flex-between ">
+        <h2 class="logo"><a href="<?= Url::to(['/']) ?>"><?= Yii::t('app', Yii::$app->name) ?></a></h2>
+        <nav class="uk-navbar-container uk-navbar-transparent">
+            <div uk-navbar>
+                <div class="uk-navbar-center">
+                    <ul class="uk-navbar-nav">
+                        <li<?= appHelper::isMenuActive($this, 'gallery') ? ' class="uk-active"' : '' ?>>
+                            <a href="<?= Url::to(['gallery/display']) ?>"><?= Yii::t('app', 'Галерея') ?></a>
+                        </li>
+                        <li<?= appHelper::isMenuActive($this, 'contacts') ? ' class="uk-active"' : '' ?>>
+                            <a href="<?= Url::to(['site/contacts']) ?>"><?= Yii::t('app', 'Контакты') ?></a>
+                        </li>
+                        <li<?= appHelper::isMenuActive($this, 'about') ? ' class="uk-active"' : '' ?>>
+                            <a href="<?= Url::to(['site/about']) ?>"><?= Yii::t('app', 'О себе') ?></a>
+                        </li>
+                        <li<?= appHelper::isMenuActive($this, 'blog') ? ' class="uk-active"' : '' ?>>
+                            <a href="<?= Url::to(['blog/display']) ?>"><?= Yii::t('app', 'Заметки') ?></a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="uk-navbar-right lang-switcher">
+                    <div class="uk-navbar-item">
+                        <div class="uk-grid-small uk-child-width-1-2 uk-grid-divider" uk-grid>
+                            <div><a class="uk-active uk-disabled uk-text-muted"
+                                    href="#"><?= langHelper::$langTitles[langHelper::getCurrentLang()] ?></a></div>
+                            <?php foreach ($langData as $lang) { ?>
+                                <div><a href="<?= $lang['href'] ?>"><?= $lang['langTitle'] ?></a></div>
+                            <?php } ?>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </div>
 </header>

@@ -18,4 +18,7 @@ return [
     'В конец' => 'End',
     'Обратная связь' => 'Feedback',
     'Отправить' => 'Submit',
+    'Имя' => 'Your Name',
+    'Тема' => 'Subject',
+    'Сообщение' => 'Message Body',
 ];

@@ -2,19 +2,14 @@
 
 namespace app\controllers;
 
-use app\models\ContactForm;
 use app\models\Gallery;
-use app\models\Page;
-use app\models\Post;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\web\Controller;
 use yii\web\ErrorAction;
 use yii\web\HttpException;
-use yii\web\Response;
 
-class GalleryController extends Controller
+class GalleryController extends PortfolioController
 {
     /**
      * {@inheritdoc}
@@ -68,7 +63,7 @@ class GalleryController extends Controller
             'items' => Gallery::find()
                 ->andWhere(['published' => 1])
                 ->orderBy(['ordering' => SORT_ASC])
-                ->all(),
+                ->all()
         ]);
     }
 

@@ -11,16 +11,16 @@ declare(strict_types=1);
 
 use app\assets\Admin\AdminAsset;
 use app\assets\DateTimePicker\DateTimePickerAsset;
+use app\assets\HtmlEditor\HtmlEditorAsset;
 use app\models\Gallery;
 use app\widgets\AdminToolbar\EditToolbar;
 use app\widgets\ImageSelector\ImageSelector;
 use app\widgets\Status\StatusSwitcher;
-use conquer\codemirror\CodemirrorAsset;
-use app\widgets\CodemirrorWidget;
 use yii\widgets\ActiveForm;
 
 /** @var Gallery $item */
 
+HtmlEditorAsset::register($this);
 AdminAsset::register($this);
 DateTimePickerAsset::register($this);
 ?>
@@ -50,41 +50,43 @@ DateTimePickerAsset::register($this);
         <div>
             <div class="uk-grid-small" uk-grid>
                 <div class="uk-width-3-4">
-                    <?php foreach (['title', 'alias', 'subtitle'] as $attributeName) { ?>
-                        <?= $form->field($item, $attributeName)->textInput([
-                            'autofocus' => $attributeName == 'title',
-                        ]) ?>
-                    <?php } ?>
+                    <ul id="lang-switcher" uk-tab>
+                        <li class="uk-active"><a href="#">Русский</a></li>
+                        <li id="en-tab"><a href="#">English</a></li>
+                    </ul>
+                    <div class="uk-switcher">
+                        <div>
+                            <?php foreach (['title', 'subtitle'] as $attributeName) { ?>
+                                <?= $form->field($item, $attributeName)->textInput([
+                                    'autofocus' => $attributeName == 'title',
+                                ]) ?>
+                            <?php } ?>
 
-                    <?= $form->field($item, 'description')->widget(CodemirrorWidget::class, [
-                        'assets' => [
-                            CodemirrorAsset::ADDON_FOLD_XML_FOLD,
-                            CodemirrorAsset::ADDON_FOLD_FOLDCODE,
-                            CodemirrorAsset::ADDON_FOLD_BRACE_FOLD,
-                            CodemirrorAsset::ADDON_FOLD_INDENT_FOLD,
-                            CodemirrorAsset::ADDON_SELECTION_ACTIVE_LINE,
-                            CodemirrorAsset::ADDON_EDIT_MATCHBRACKETS,
-                            CodemirrorAsset::ADDON_EDIT_MATCHTAGS,
-                            CodemirrorAsset::ADDON_EDIT_TRAILINGSPACE,
-                            CodemirrorAsset::ADDON_EDIT_CLOSETAG,
-                            CodemirrorAsset::ADDON_EDIT_CLOSEBRACKETS,
-                            CodemirrorAsset::MODE_XML,
-                        ],
-                        'options' => [
-                            'rows' => 20,
-                        ],
-                        'settings' => [
-                            'showTrailingSpace' => true,
-                            'mode' => 'xml',
-                            'lineNumbers' => true,
-                            'matchBrackets' => true,
-                            'autoCloseBrackets' => true,
-                            'autoCloseTags' => true,
-                            'matchTags' => true,
-                        ],
-                    ]); ?>
+                            <?= $form->field($item, 'description')->textarea([
+                                'id' => 'description_ru',
+                            ]); ?>
+
+                            <?php foreach (['seo_title', 'seo_description'] as $attributeName) { ?>
+                                <?= $form->field($item, $attributeName)->textInput() ?>
+                            <?php } ?>
+                        </div>
+                        <div>
+                            <?php foreach (['title_en', 'subtitle_en'] as $attributeName) { ?>
+                                <?= $form->field($item, $attributeName)->textInput() ?>
+                            <?php } ?>
+
+                            <?= $form->field($item, 'description_en')->textarea([
+                                'id' => 'description_en',
+                            ]); ?>
+
+                            <?php foreach (['seo_title_en', 'seo_description_en'] as $attributeName) { ?>
+                                <?= $form->field($item, $attributeName)->textInput() ?>
+                            <?php } ?>
+                        </div>
+                    </div>
                 </div>
                 <div class="uk-width-1-4">
+                    <?= $form->field($item, 'alias')->textInput() ?>
                     <?= StatusSwitcher::widget([
                         'status' => (bool)$item->published,
                     ]); ?>
@@ -92,9 +94,6 @@ DateTimePickerAsset::register($this);
                         'selectType' => ImageSelector::SELECT_SINGLE,
                         'buttonText' => 'Выбрать изображение',
                     ]); ?>
-                    <?php foreach (['seo_title', 'seo_description'] as $attributeName) { ?>
-                        <?= $form->field($item, $attributeName)->textInput() ?>
-                    <?php } ?>
                 </div>
             </div>
         </div>

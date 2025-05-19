@@ -14,14 +14,19 @@ declare(strict_types=1);
  */
 
 use app\assets\Frontend\FrontendAsset;
-use yii\helpers\Html;
+use app\helpers\langHelper;
 
 FrontendAsset::register($this);
+$langData = langHelper::getLangHrefs($this->params['lang_path']);
+$request = Yii::$app->getRequest();
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1, shrink-to-fit=no']);
 $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
+foreach($langData as $lang){
+    $this->registerLinkTag(['rel' => 'alternate', 'hreflang' => $lang['hreflang'], 'href' => $lang['href']]);
+}
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
 ?>
 <?php $this->beginPage() ?>
@@ -32,7 +37,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <?php $this->head() ?>
 </head>
 <body class="uk-flex uk-flex-column uk-flex-between uk-height-1-1">
-<?= $this->render('@app/views/layouts/menu.php') ?>
+<?= $this->render('@app/views/layouts/menu.php', ['langData' => $langData]) ?>
 <?php $this->beginBody() ?>
 
 <main id="main" class="uk-flex-shrink-0" role="main">

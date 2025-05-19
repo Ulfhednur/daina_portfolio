@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 /**
  * @version      1.0
  * @author       Tempadmin
@@ -11,6 +11,7 @@ declare(strict_types = 1);
 
 namespace app\models;
 
+use app\helpers\langHelper;
 use yii\behaviors\AttributeBehavior;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -37,7 +38,8 @@ use yii\helpers\BaseInflector;
  */
 abstract class Item extends ActiveRecord
 {
-    use Orderings;
+    use OrderingTrait;
+
     const string ITEM_TYPE_PAGE = 'page';
     const string ITEM_TYPE_POST = 'post';
     const string ITEM_TYPE_GALLERY = 'gallery';
@@ -45,6 +47,10 @@ abstract class Item extends ActiveRecord
     protected static string $itemType;
 
     protected bool $disableTransactions = false;
+
+    protected array $translatable = [
+        'title', 'subtitle', 'description', 'seo_description', 'seo_title', 'subtitle',
+    ];
 
     /**
      * @inheritDoc
@@ -69,11 +75,13 @@ abstract class Item extends ActiveRecord
     {
         return [
             [['title', 'alias', 'subtitle'], 'string', 'max' => 255],
+            [['title_en', 'alias', 'subtitle_en'], 'string', 'max' => 255],
             [['description', 'seo_description', 'seo_title', 'subtitle'], 'string'],
+            [['description_en', 'seo_description_en', 'seo_title_en', 'subtitle_en'], 'string'],
             [['image_id', 'published', 'ordering'], 'integer'],
             ['published', 'in', 'range' => [0, 1]],
             [['title'], 'required'],
-            ['alias', 'filter', 'filter' => function ($value) {
+            ['alias', 'filter', 'filter' => function($value) {
                 if (empty($value)) {
                     $value = $this->title;
                 }
@@ -89,7 +97,13 @@ abstract class Item extends ActiveRecord
      */
     public static function find(): ActiveQuery
     {
-        return parent::find()->andWhere(['item_type' => static::$itemType]);
+        $query = parent::find()->andWhere(['item_type' => static::$itemType]);
+
+        if (!langHelper::isLangDefault()) {
+            $title = 'title_' . langHelper::getCurrentLang();
+            $query->andWhere(['!=', $title, '']);
+        }
+        return $query;
     }
 
     /**
@@ -119,6 +133,11 @@ abstract class Item extends ActiveRecord
             'description' => 'Описание',
             'seo_title' => 'SEO заголовок',
             'seo_description' => 'SEO Описание',
+            'title_en' => 'Заголовок (En)',
+            'subtitle_en' => 'Подзаголовок (En)',
+            'description_en' => 'Описание (En)',
+            'seo_title_en' => 'SEO заголовок (En)',
+            'seo_description_en' => 'SEO Описание (En)',
             'ordering' => 'Порядок сортировки',
             'created_date' => 'Дата создания',
         ];
@@ -136,7 +155,7 @@ abstract class Item extends ActiveRecord
                     BaseActiveRecord::EVENT_BEFORE_INSERT => ['item_type'],
                     BaseActiveRecord::EVENT_BEFORE_UPDATE => ['item_type'],
                 ],
-                'value' => function () {
+                'value' => function() {
                     return static::$itemType;
                 },
             ],
@@ -150,5 +169,15 @@ abstract class Item extends ActiveRecord
             $query->where(['like', 'title', $search]);
         }
         return $query;
+    }
+
+    public function __get($name)
+    {
+        $lang = langHelper::getCurrentLang();
+        if (!langHelper::isLangDefault() && in_array($name, $this->translatable)) {
+            $name .= '_' . $lang;
+        }
+
+        return parent::__get($name);
     }
 }

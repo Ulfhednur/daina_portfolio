@@ -4,5 +4,6 @@ return [
     'adminEmail' => env('ADMIN_EMAIL'),
     'senderEmail' => env('ADMIN_EMAIL'),
     'senderName' => env('SENDER_NAME'),
-    'siteLogo' => env("SITE_LOGO")
+    'siteLogo' => env("SITE_LOGO"),
+    'bsVersion' => '5.x',
 ];

@@ -27,7 +27,7 @@ use yii\helpers\BaseInflector;
  */
 class MediaGallery extends ActiveRecord
 {
-    use Orderings;
+    use OrderingTrait;
 
     /**
      * @inheritDoc

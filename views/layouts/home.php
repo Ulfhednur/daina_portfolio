@@ -14,15 +14,20 @@ declare(strict_types=1);
  */
 
 use app\assets\Frontend\FrontendAsset;
+use app\helpers\langHelper;
 use yii\helpers\Html;
 
 FrontendAsset::register($this);
+$langData = langHelper::getLangHrefs(['/']);
 
 $this->registerCsrfMetaTags();
 $this->registerMetaTag(['charset' => Yii::$app->charset], 'charset');
 $this->registerMetaTag(['name' => 'viewport', 'content' => 'width=device-width, initial-scale=1, shrink-to-fit=no']);
 $this->registerMetaTag(['name' => 'description', 'content' => $this->params['meta_description'] ?? '']);
-$this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_keywords'] ?? '']);
+
+foreach($langData as $lang){
+    $this->registerLinkTag(['rel' => 'alternate', 'hreflang' => $lang['hreflang'], 'href' => $lang['href']]);
+}
 $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii::getAlias('@web/favicon.ico')]);
 ?>
 <?php $this->beginPage() ?>
@@ -36,7 +41,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <div class="homepage-bg uk-animation-kenburns uk-animation-reverse uk-height-1-1 uk-width-1-1"></div>
 <div class="content">
     <?php $this->beginBody() ?>
-    <?= $this->render('@app/views/layouts/menu.php') ?>
+    <?= $this->render('@app/views/layouts/menu.php', ['langData' => $langData]) ?>
     <?php $this->endBody() ?>
 </div>
 </body>

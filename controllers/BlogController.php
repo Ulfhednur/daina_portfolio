@@ -2,9 +2,6 @@
 
 namespace app\controllers;
 
-use app\models\ContactForm;
-use app\models\Gallery;
-use app\models\Page;
 use app\models\Post;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -13,9 +10,8 @@ use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\ErrorAction;
 use yii\web\HttpException;
-use yii\web\Response;
 
-class BlogController extends Controller
+class BlogController extends PortfolioController
 {
     /**
      * {@inheritdoc}
@@ -65,7 +61,7 @@ class BlogController extends Controller
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Post::find()->andWhere(['published' => 1]),
-            'pagination' => ['pageSize' => 3],
+            'pagination' => ['pageSize' => env('DEFAULT_PAGE_SIZE')],
             'sort' => [
                 'defaultOrder' => [
                     'created_date' => SORT_DESC,

@@ -2,7 +2,7 @@ jQuery(document).ready(function ($) {
     let currentFolder = 0;
     let managerModal = UIkit.modal(document.getElementById('image-selector-modal'), '{"esc-close": false, "bg-close": true}');
 
-    UIkit.util.on('image-selector-modal', 'beforehide', function () {
+    UIkit.util.on('#image-selector-modal', 'beforehide', function () {
         if (galleryId) {
             reloadPhotos();
         }
@@ -161,8 +161,6 @@ jQuery(document).ready(function ($) {
             }
         }
     }
-    const createBtn = $('#folder-create');
-    const removeBtn = $('#btn-remove');
 
     const saveClick = function () {
         $('.media-manager-form button[type="submit"]').on('click', function (e) {
@@ -284,7 +282,7 @@ jQuery(document).ready(function ($) {
     }
 
     const clickCreate = function () {
-        createBtn.on('click', function (e) {
+        $('#folder-create').on('click', function (e) {
             e.preventDefault();
             $.ajax({
                 url: adminUrl + '/folder/create/' + currentFolder + '?=allow_multiselect' + ImageSelectorMultiselect,
@@ -312,7 +310,7 @@ jQuery(document).ready(function ($) {
     }
 
     const clickRemove = function () {
-        removeBtn.on('click', function (e) {
+        $('#btn-remove').on('click', function (e) {
             e.preventDefault();
             spinnerModal.addClass('visible');
             let checkedItems = $('input[type="checkbox"][data-item-type="media"]:checked');
@@ -494,6 +492,7 @@ jQuery(document).ready(function ($) {
         if (data) {
             photosBlock.html(data.html);
             enableSortable();
+            deleteFromGalleryClick();
         } else {
             $.ajax({
                 url: adminUrl + '/gallery/show/' + galleryId,
@@ -502,10 +501,10 @@ jQuery(document).ready(function ($) {
                 success: function (data) {
                     photosBlock.html(data.html);
                     enableSortable();
+                    deleteFromGalleryClick();
                 }
             });
         }
-        deleteFromGalleryClick();
     }
 
     const reloadPanels = function (data) {

@@ -97,7 +97,14 @@ jQuery(document).ready(function ($) {
         });
     });
 
-    $('select[name="pageSize"]').on('change', function(){
+    $('select[name="pageSize"]').on('change', function () {
         $('#admin-form').submit();
     });
+
+    if (typeof UIkit2 !== 'undefined') {
+        let htmlRu = UIkit2.htmleditor(document.getElementById('description_ru'));
+        document.getElementById('en-tab').addEventListener('click', function (e) {
+            let htmlEn = UIkit2.htmleditor(document.getElementById('description_en'));
+        });
+    }
 });

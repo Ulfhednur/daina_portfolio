@@ -15,7 +15,7 @@ use Exception;
 use Yii;
 use yii\db\Exception as dbException;
 
-trait Orderings
+trait OrderingTrait
 {
     protected bool $disableTransactions = false;
 

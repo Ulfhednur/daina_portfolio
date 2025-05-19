@@ -86,7 +86,7 @@ $mainMenu = [
         <?= $content ?>
 </main>
 
-<footer id="footer" class="uk-section uk-section-secondary uk-section-xsmall uk-section-muted">
+<footer id="footer" class="uk-section-secondary uk-section-muted">
     <div class="uk-container uk-container-expand">
         <div class="uk-flex uk-flex-between uk-text-muted">
             <div class="uk-text-left">&copy; Tempadmin <?= date('Y') ?></div>
