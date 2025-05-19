@@ -1,0 +1,154 @@
+<?php
+declare(strict_types = 1);
+/**
+ * @version      1.0
+ * @author       Tempadmin
+ * @package      Daina portfolio
+ * @copyright    Copyright (C) 2025 Daina. All rights reserved.
+ * @license      GNU/GPL
+ */
+
+
+namespace app\models;
+
+use yii\behaviors\AttributeBehavior;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
+use yii\db\BaseActiveRecord;
+use yii\helpers\BaseInflector;
+
+/**
+ * Abstract class Item
+ *
+ * @property int        $id
+ * @property string     $item_type
+ * @property int        $image_id
+ * @property int        $published
+ * @property string     $alias
+ * @property string     $title
+ * @property string     $subtitle
+ * @property string     $description
+ * @property string     $seo_title
+ * @property string     $seo_description
+ * @property int        $ordering
+ * @property string     $created_date
+ *
+ * @property-read Media $image
+ */
+abstract class Item extends ActiveRecord
+{
+    use Orderings;
+    const string ITEM_TYPE_PAGE = 'page';
+    const string ITEM_TYPE_POST = 'post';
+    const string ITEM_TYPE_GALLERY = 'gallery';
+
+    protected static string $itemType;
+
+    protected bool $disableTransactions = false;
+
+    /**
+     * @inheritDoc
+     */
+    public function formName(): string
+    {
+        return '';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function tableName(): string
+    {
+        return 'items';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function rules(): array
+    {
+        return [
+            [['title', 'alias', 'subtitle'], 'string', 'max' => 255],
+            [['description', 'seo_description', 'seo_title', 'subtitle'], 'string'],
+            [['image_id', 'published', 'ordering'], 'integer'],
+            ['published', 'in', 'range' => [0, 1]],
+            [['title'], 'required'],
+            ['alias', 'filter', 'filter' => function ($value) {
+                if (empty($value)) {
+                    $value = $this->title;
+                }
+                return BaseInflector::slug($value);
+            }],
+            [['alias'], 'unique'],
+            ['created_date', 'default', 'value' => (new \DateTime())->setTimezone(new \DateTimeZone(env("TIMEZONE")))->format('Y-m-d H:i:s')],
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function find(): ActiveQuery
+    {
+        return parent::find()->andWhere(['item_type' => static::$itemType]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isTransactional($operation): bool
+    {
+        if ($this->disableTransactions) {
+            return false;
+        }
+        return parent::isTransactional($operation);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels(): array
+    {
+        return [
+            'id' => 'id',
+            'item_type' => 'Тип записи',
+            'image_id' => 'Изображение записи',
+            'published' => 'Публикация',
+            'alias' => 'Алиас',
+            'title' => 'Заголовок',
+            'subtitle' => 'Подзаголовок',
+            'description' => 'Описание',
+            'seo_title' => 'SEO заголовок',
+            'seo_description' => 'SEO Описание',
+            'ordering' => 'Порядок сортировки',
+            'created_date' => 'Дата создания',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors(): array
+    {
+        return [
+            [
+                'class' => AttributeBehavior::class,
+                'attributes' => [
+                    BaseActiveRecord::EVENT_BEFORE_INSERT => ['item_type'],
+                    BaseActiveRecord::EVENT_BEFORE_UPDATE => ['item_type'],
+                ],
+                'value' => function () {
+                    return static::$itemType;
+                },
+            ],
+        ];
+    }
+
+    public static function Search(?string $search)
+    {
+        $query = static::find();
+        if ($search) {
+            $query->where(['like', 'title', $search]);
+        }
+        return $query;
+    }
+}
