@@ -19,6 +19,7 @@ $this->title = $item->seo_title ? $item->seo_title : $item->title;
 if ($item->seo_description) {
     $this->params['meta_description'] = $item->seo_description;
 }
+$this->params['lang_path'] = ['blog/show', 'alias' => $item->alias];
 ?>
 <section class="uk-section uk-section-primary">
     <div class="uk-container">

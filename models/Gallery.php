@@ -54,6 +54,7 @@ class Gallery extends Item
         return array_merge(
             parent::rules(),
             [
+                [['image_id'], 'required'],
                 [['image_id'], 'exist', 'targetClass' => Media::class, 'targetAttribute' => 'id'],
             ]
         );

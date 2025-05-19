@@ -25,7 +25,8 @@
         "yiisoft/yii2-jui": "^2.0",
         "guzzlehttp/guzzle": "^7.0",
         "aws/aws-sdk-php": "*",
-        "mihaildev/yii2-ckeditor": "*"
+        "mihaildev/yii2-ckeditor": "*",
+        "cetver/yii2-language-url-manager": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

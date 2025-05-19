@@ -31,7 +31,7 @@ if (!empty($item->id)) {
     ],
 ]); ?>
 
-<?php foreach (['alt', 'title', 'description'] as $attribute) { ?>
+<?php foreach (['alt', 'title', 'description', 'alt_en', 'title_en', 'description_en'] as $attribute) { ?>
     <?= $form->field($item, $attribute)->textInput([
         'autofocus' => $attribute == 'alt',
     ]) ?>

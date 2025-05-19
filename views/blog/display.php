@@ -13,12 +13,14 @@ use app\models\Post;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\LinkPager;
 use yii\data\Pagination;
+use yii\helpers\Url;
 
 /**
+ * @var yii\web\View $this
  * @var Post[]     $items
  * @var Pagination $pagination
  */
-
+$this->params['lang_path'] = ['blog/display'];
 ?>
 <section class="uk-section">
     <div class="uk-container">
@@ -31,13 +33,13 @@ use yii\data\Pagination;
                     <div class="post-item uk-card uk-card-body uk-card-default">
                         <div class="uk-grid-small" uk-grid>
                             <div class="post-image-wrapper uk-width-1-3@s uk-width-1-4@m">
-                                <a href="/blog/<?= $item->alias ?>" class="post-image-link">
+                                <a href="<?=Url::to(['blog/show', 'alias' => $item->alias]) ?>" class="post-image-link">
                                     <img src="<?= $item->image->url_preview ?>" alt="<?= $item->image->alt ?>">
                                 </a>
                             </div>
                             <div class="post-intro-wrapper uk-width-2-3@s uk-width-3-4@m">
                                 <h3 class="uk-card-title">
-                                    <a class="uk-display-block uk-width-1-1" href="/blog/<?= $item->alias ?>">
+                                    <a class="uk-display-block uk-width-1-1" href="<?=Url::to(['blog/show', 'alias' => $item->alias]) ?>">
                                         <?= $item->title ?>
                                         <?php if (!empty($item->subtitle)) { ?>
                                             <div class="uk-text-small uk-text-muted"><?= $item->subtitle ?></div>

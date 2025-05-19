@@ -10,14 +10,15 @@ declare(strict_types=1);
  */
 
 use app\assets\Admin\AdminAsset;
+use app\assets\HtmlEditor\HtmlEditorAsset;
 use app\models\Page;
 use app\widgets\AdminToolbar\EditToolbar;
-use app\widgets\CKEditor;
 use app\widgets\Status\StatusSwitcher;
 use yii\widgets\ActiveForm;
 
 /** @var Page $item */
 
+HtmlEditorAsset::register($this);
 AdminAsset::register($this);
 ?>
 
@@ -39,7 +40,7 @@ AdminAsset::register($this);
         <div class="uk-width-3-4">
             <ul uk-tab>
                 <li class="uk-active"><a href="#">Русский</a></li>
-                <li><a href="#">English</a></li>
+                <li id="en-tab"><a href="#">English</a></li>
             </ul>
             <div class="uk-switcher">
                 <div>
@@ -49,11 +50,8 @@ AdminAsset::register($this);
                         ]) ?>
                     <?php } ?>
 
-                    <?= $form->field($item, 'description')->widget(CKEditor::class, [
-                        'editorOptions' => [
-                            'preset' => 'full',
-                            'inline' => false,
-                        ],
+                    <?= $form->field($item, 'description')->textarea([
+                        'id' => 'description_ru',
                     ]); ?>
 
                     <?php foreach (['seo_title', 'seo_description'] as $attributeName) { ?>
@@ -65,11 +63,8 @@ AdminAsset::register($this);
                         <?= $form->field($item, $attributeName)->textInput() ?>
                     <?php } ?>
 
-                    <?= $form->field($item, 'description_en')->widget(CKEditor::class, [
-                        'editorOptions' => [
-                            'preset' => 'full',
-                            'inline' => false,
-                        ],
+                    <?= $form->field($item, 'description_en')->textarea([
+                        'id' => 'description_en',
                     ]); ?>
 
                     <?php foreach (['seo_title_en', 'seo_description_en'] as $attributeName) { ?>

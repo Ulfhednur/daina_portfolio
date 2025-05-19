@@ -14,7 +14,7 @@ use yii\web\ErrorAction;
 use yii\web\HttpException;
 use yii\web\Response;
 
-class SiteController extends Controller
+class SiteController extends PortfolioController
 {
     /**
      * {@inheritdoc}

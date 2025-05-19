@@ -1,3 +1,7 @@
+#main {
+    overflow-y: scroll;
+}
+
 .publish-switcher-wrapper {
     margin-top: 21px;
     margin-bottom: 7px;
@@ -76,4 +80,12 @@
 
 .CodeMirror pre.CodeMirror-line, .CodeMirror pre.CodeMirror-line-like {
     word-wrap: normal !important;
+}
+
+.uk-navbar-nav > li > a, .uk-navbar-item, .uk-navbar-toggle {
+    min-height: 40px;
+}
+
+.uk-logo > img{
+    max-height: 32px;
 }

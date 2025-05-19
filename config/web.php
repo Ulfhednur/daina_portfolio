@@ -77,9 +77,14 @@ $config = [
         ],
         'db' => $db,
         'urlManager' => [
+            'class' => \cetver\LanguageUrlManager\UrlManager::class,
             'enablePrettyUrl' => true,
             'enableStrictParsing' => true,
             'showScriptName' => false,
+            'languages' => ['ru', 'en'],
+            'existsLanguageSubdomain' => false,
+            'blacklist' => ['/^admin\/.*$/'],
+            'queryParam' => 'language',
             'rules' => [
                 [
                     'class' => \yii\rest\UrlRule::class,
@@ -205,6 +210,7 @@ $config = [
                 ],
                 '' => 'site/index',
                 'contacts' => 'site/contacts',
+                'about' => 'site/about',
             ],
         ],
     ],

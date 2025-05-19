@@ -17,7 +17,7 @@ use yii\web\AssetBundle;
  */
 class DateTimePickerAsset extends AssetBundle
 {
-    public $sourcePath = '@app/assets/DateTimePicker';
+    public $sourcePath = '@app/assets/DateTimePicker/src';
 
     public $js = ['js/jquery.datetimepicker.full.min.js'];
 
