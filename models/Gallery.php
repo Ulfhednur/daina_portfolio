@@ -24,10 +24,15 @@ use yii\db\Query;
  * @property int                 $published
  * @property string              $alias
  * @property string              $title
+ * @property string              $title_en
  * @property string              $subtitle
+ * @property string              $subtitle_en
  * @property string              $description
+ * @property string              $description_en
  * @property string              $seo_title
+ * @property string              $seo_title_en
  * @property string              $seo_description
+ * @property string              $seo_description_en
  * @property int                 $ordering
  * @property string              $created_date
  *

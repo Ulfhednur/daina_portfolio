@@ -21,12 +21,11 @@
         "yiisoft/yii2-bootstrap5": "~2.0.2",
         "yiisoft/yii2-symfonymailer": "~2.0.3",
         "yiithings/yii2-dotenv": "*",
-        "sjaakp/yii2-icon": "^1.2",
         "yiisoft/i18n": "^1.2",
         "yiisoft/yii2-jui": "^2.0",
         "guzzlehttp/guzzle": "^7.0",
         "aws/aws-sdk-php": "*",
-        "conquer/codemirror": "*"
+        "mihaildev/yii2-ckeditor": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

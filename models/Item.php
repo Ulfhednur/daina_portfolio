@@ -69,7 +69,9 @@ abstract class Item extends ActiveRecord
     {
         return [
             [['title', 'alias', 'subtitle'], 'string', 'max' => 255],
+            [['title_en', 'alias', 'subtitle_en'], 'string', 'max' => 255],
             [['description', 'seo_description', 'seo_title', 'subtitle'], 'string'],
+            [['description_en', 'seo_description_en', 'seo_title_en', 'subtitle_en'], 'string'],
             [['image_id', 'published', 'ordering'], 'integer'],
             ['published', 'in', 'range' => [0, 1]],
             [['title'], 'required'],
@@ -119,6 +121,11 @@ abstract class Item extends ActiveRecord
             'description' => 'Описание',
             'seo_title' => 'SEO заголовок',
             'seo_description' => 'SEO Описание',
+            'title_en' => 'Заголовок (En)',
+            'subtitle_en' => 'Подзаголовок (En)',
+            'description_en' => 'Описание (En)',
+            'seo_title_en' => 'SEO заголовок (En)',
+            'seo_description_en' => 'SEO Описание (En)',
             'ordering' => 'Порядок сортировки',
             'created_date' => 'Дата создания',
         ];
