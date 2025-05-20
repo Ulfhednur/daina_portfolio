@@ -84,6 +84,7 @@
 h3 > a {
     text-decoration: none;
 }
+
 h3 > a:hover {
     color: #000;
     text-decoration: none;
@@ -101,4 +102,35 @@ hr.read-more {
 .lang-switcher .uk-grid-divider.uk-grid-small > :not(.uk-first-column)::before,
 .lang-switcher .uk-grid-divider.uk-grid-column-small > :not(.uk-first-column)::before {
     left: 5px;
+}
+
+.flex-gallery {
+    --space: 10px;
+    --min-height: 450px;
+    --last-row-background: rgb(255, 255, 255);
+}
+
+.flex-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: var(--space);
+    list-style: none;
+    margin: 0 !important; /* We use !important to avoid gaps in some environments. */
+    padding: 0 !important;
+}
+
+.flex-gallery > .gallery-item {
+    flex-grow: calc(var(--width) * (100000 / var(--height)));
+    flex-basis: calc(var(--min-height) * (var(--width) / var(--height)));
+    aspect-ratio: var(--width) / var(--height);
+    position: relative;
+    overflow: hidden;
+    margin: 0 !important; /* We use !important to avoid gaps in some environments. */
+    padding: 0 !important; /* We use !important to avoid gaps in some environments. */
+}
+
+.flex-gallery > .gallery-item > .gallery-image-link > img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }

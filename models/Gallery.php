@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace app\models;
 
+use app\widgets\TemplateSelector\GalleryTemplateSelector;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Query;
@@ -56,8 +57,22 @@ class Gallery extends Item
             [
                 [['image_id'], 'required'],
                 [['image_id'], 'exist', 'targetClass' => Media::class, 'targetAttribute' => 'id'],
+                ['settings', 'validateSettings']
             ]
         );
+    }
+
+    public function validateSettings(): bool
+    {
+        if (empty($this->settings)) {
+            $this->settings['template'] = GalleryTemplateSelector::TMPL_MASONRY;
+        }
+
+        if (!in_array($this->settings['template'], GalleryTemplateSelector::getTypes())) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

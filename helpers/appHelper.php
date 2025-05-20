@@ -23,7 +23,7 @@ abstract class appHelper
 
     public static function isMenuActive($view, string $menuitem): bool
     {
-        return '/' . mb_substr($view->context->route, 0, mb_strlen($menuitem)) == '/' . $menuitem;
+        return mb_substr(str_replace(env('ADMIN_URL') . '/', '', $view->context->route), 0, mb_strlen($menuitem)) == $menuitem;
     }
 
 }

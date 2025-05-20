@@ -41,18 +41,20 @@ use app\models\Media;
                     <?php } ?>
                 </label>
                 <div class="card-header"><a class="uk-link-reset" href="#"
-                                            data-folder-id="<?= $folder->id ?>"><?= $folder->title ?></a></div>
+                                            data-folder-id="<?= $folder->id ?>"><?= $folder->title ?> <span
+                                uk-icon="file-edit"></span></a></div>
             </div>
         </div>
     <?php } ?>
     <?php foreach ($media as $item) { ?>
         <div>
-            <div class="card<?=in_array($item->id, $selectedItems) ? ' selected' : '';?>">
+            <div class="card<?= in_array($item->id, $selectedItems) ? ' selected' : ''; ?>">
                 <label for="media-item-<?= $item->id ?>" class="media-thumb-wrapper">
                     <img src="<?= $item->url_thumbnail ?>" alt="<?= $item->alt ?>" title="<?= $item->title ?>"/>
                     <?php if ($allowMultiSelect) { ?>
                         <input type="checkbox" value="<?= $item->id ?>" id="media-item-<?= $item->id ?>" name="ids[]"
-                               data-item-type="media" class="uk-checkbox"<?=in_array($item->id, $selectedItems) ? ' checked' : '';?>>
+                               data-item-type="media"
+                               class="uk-checkbox"<?= in_array($item->id, $selectedItems) ? ' checked' : ''; ?>>
                     <?php } else { ?>
                         <input type="radio" value="<?= $item->id ?>" id="media-item-<?= $item->id ?>" name="ids"
                                data-item-type="media" class="uk-checkbox">
