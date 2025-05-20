@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace app\modules\admin\controllers;
 
+use app\helpers\ImageHelper;
 use app\models\Folder;
 use app\models\Media;
 use app\models\MediaGallery;
@@ -59,7 +60,11 @@ class MediaController extends FileController
             $model->load([
                 'fileName' => $file->fullPath,
                 'folder_id' => $id,
+                'settings' => [
+                    'dimensions' => ImageHelper::getDimensions($file->tempName)
+                ]
             ]);
+
             if ($model->validate()) {
                 $model->imageContent = file_get_contents($file->tempName);
                 $model->imageMime = $file->type;

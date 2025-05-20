@@ -8,7 +8,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    const spinnerModal = $('#spinner-modal');
+    let spinnerModal = $('#spinner-modal');
     $('.image-selector-modal-opener').on('click', function (e) {
         e.preventDefault();
         ImageSelectorMultiselect = $(this).data('select-type');
@@ -84,7 +84,7 @@ jQuery(document).ready(function ($) {
                     let uploadNotification = document.createElement('div');
                     uploadNotification.className = 'uk-text-success';
                     uploadNotification.setAttribute('id', 'upload-notification-' + i);
-                    uploadNotification.innerText = '&nbsp;';
+                    uploadNotification.innerHtml = '&nbsp;';
                     progressBlock.appendChild(uploadNotification);
                     let progress = document.createElement('progress');
                     progress.className = 'uk-progress uk-margin-remove';
@@ -103,59 +103,63 @@ jQuery(document).ready(function ($) {
             i = 0;
             let queueSize = 0;
             let uploadSlots = 3;
+            let uploaded = [];
             let executeUpload = function (file) {
-                if (uploadSlots) {
-                    uploadSlots--;
-                    let uploadProgress = document.getElementById('upload-progress-' + i.toString());
-                    let uploadNotification = document.getElementById('upload-notification-' + i.toString());
-                    UIkit.scroll(filePreviews, {offset: 240}).scrollTo(uploadProgress);
-                    formData.append('file', file);
-                    $.ajax({
-                        url: adminUrl + '/media/create/' + currentFolder,
-                        type: 'POST',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        dataType: 'json',
-                        xhr: function () {
-                            const xhr = new XMLHttpRequest();
-                            xhr.upload.addEventListener('progress', (e) => {
-                                const percent = (e.loaded / e.total) * 100;
-                                uploadProgress.setAttribute('value', percent.toFixed(2));
-                            });
-                            return xhr;
-                        },
-                        success: function (data) {
-                            uploadNotification.innerText = 'Файл загружен.'
-                            reloadPanels(data);
-                        },
-                        error: function (xhr) {
-                            let errorMsg = JSON.parse(xhr.responseText).message;
-                            UIkit.notification({
-                                message: errorMsg,
-                                status: 'danger',
-                                pos: 'top-center'
-                            });
+                if (typeof uploaded.find(item => item === file.name) === 'undefined') {
+                    if (uploadSlots) {
+                        uploadSlots--;
+                        let uploadProgress = document.getElementById('upload-progress-' + i.toString());
+                        let uploadNotification = document.getElementById('upload-notification-' + i.toString());
+                        UIkit.scroll(filePreviews, {offset: 240}).scrollTo(uploadProgress);
+                        formData.append('file', file);
+                        $.ajax({
+                            url: adminUrl + '/media/create/' + currentFolder,
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            dataType: 'json',
+                            xhr: function () {
+                                const xhr = new XMLHttpRequest();
+                                xhr.upload.addEventListener('progress', (e) => {
+                                    const percent = (e.loaded / e.total) * 100;
+                                    uploadProgress.setAttribute('value', percent.toFixed(2));
+                                });
+                                return xhr;
+                            },
+                            success: function (data) {
+                                uploadNotification.innerText = 'Файл загружен.'
+                                reloadPanels(data);
+                            },
+                            error: function (xhr) {
+                                let errorMsg = JSON.parse(xhr.responseText).message;
+                                UIkit.notification({
+                                    message: errorMsg,
+                                    status: 'danger',
+                                    pos: 'top-center'
+                                });
 
-                            uploadNotification.innerText = errorMsg;
-                            uploadNotification.className = 'uk-text-danger';
-                            uploadProgress.setAttribute('value', '0');
-                        },
-                        complete() {
-                            uploadSlots++;
-                            queueSize--;
-                            if (queueSize === 0) {
-                                mediaTabs.removeClass('uk-disabled');
-                                mediaClose.removeClass('uk-disabled');
+                                uploadNotification.innerText = errorMsg;
+                                uploadNotification.className = 'uk-text-danger';
+                                uploadProgress.setAttribute('value', '0');
+                            },
+                            complete() {
+                                uploaded.push(file.name)
+                                uploadSlots++;
+                                queueSize--;
+                                if (queueSize === 0) {
+                                    mediaTabs.removeClass('uk-disabled');
+                                    mediaClose.removeClass('uk-disabled');
+                                }
                             }
-                        }
-                    });
+                        });
 
-                    i++;
-                } else {
-                    setTimeout(function () {
-                        executeUpload(file)
-                    }, 300);
+                        i++;
+                    } else {
+                        setTimeout(function () {
+                            executeUpload(file)
+                        }, 300);
+                    }
                 }
             }
 
@@ -167,6 +171,7 @@ jQuery(document).ready(function ($) {
     }
 
     const saveClick = function () {
+        let spinnerModal = $('#spinner-modal');
         $('.media-manager-form button[type="submit"]').on('click', function (e) {
             e.preventDefault();
             spinnerModal.addClass('visible');
@@ -314,6 +319,7 @@ jQuery(document).ready(function ($) {
     }
 
     const clickRemove = function () {
+        let spinnerModal = $('#spinner-modal');
         $('#btn-remove').on('click', function (e) {
             e.preventDefault();
             spinnerModal.addClass('visible');

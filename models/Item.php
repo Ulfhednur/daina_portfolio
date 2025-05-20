@@ -17,6 +17,7 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
 use yii\helpers\BaseInflector;
+use yii\helpers\Json;
 
 /**
  * Abstract class Item
@@ -33,6 +34,7 @@ use yii\helpers\BaseInflector;
  * @property string     $seo_description
  * @property int        $ordering
  * @property string     $created_date
+ * @property array      $settings
  *
  * @property-read Media $image
  */
@@ -152,6 +154,7 @@ abstract class Item extends ActiveRecord
             'seo_description_en' => 'SEO Описание (En)',
             'ordering' => 'Порядок сортировки',
             'created_date' => 'Дата создания',
+            'settings' => 'Параметры',
         ];
     }
 
@@ -164,13 +167,35 @@ abstract class Item extends ActiveRecord
             [
                 'class' => AttributeBehavior::class,
                 'attributes' => [
-                    BaseActiveRecord::EVENT_BEFORE_INSERT => ['item_type'],
-                    BaseActiveRecord::EVENT_BEFORE_UPDATE => ['item_type'],
+                    BaseActiveRecord::EVENT_BEFORE_INSERT => 'item_type',
+                    BaseActiveRecord::EVENT_BEFORE_UPDATE => 'item_type',
                 ],
                 'value' => function() {
                     return static::$itemType;
                 },
             ],
+            /*    [
+                    'class' => AttributeBehavior::class,
+                    'attributes' => [
+                        BaseActiveRecord::EVENT_BEFORE_INSERT => 'settings',
+                        BaseActiveRecord::EVENT_BEFORE_UPDATE => 'settings',
+                    ],
+                    'value' => function() {
+                        return Json::encode($this->settings);
+                    },
+                ],
+                [
+                    'class' => AttributeBehavior::class,
+                    'attributes' => [
+                        BaseActiveRecord::EVENT_AFTER_FIND => 'settings',
+                        BaseActiveRecord::EVENT_AFTER_INSERT => 'settings',
+                        BaseActiveRecord::EVENT_AFTER_UPDATE => 'settings',
+                        BaseActiveRecord::EVENT_AFTER_REFRESH => 'settings',
+                    ],
+                    'value' => function() {
+                        return Json::decode($this->settings);
+                    },
+                ], */
         ];
     }
 
@@ -192,6 +217,7 @@ abstract class Item extends ActiveRecord
 
     /**
      * Магия. Подцепляем суффикс языка к полю
+     *
      * @param $name
      *
      * @return mixed|null

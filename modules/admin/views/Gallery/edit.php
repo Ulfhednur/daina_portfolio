@@ -16,6 +16,7 @@ use app\models\Gallery;
 use app\widgets\AdminToolbar\EditToolbar;
 use app\widgets\ImageSelector\ImageSelector;
 use app\widgets\Status\StatusSwitcher;
+use app\widgets\TemplateSelector\GalleryTemplateSelector;
 use yii\widgets\ActiveForm;
 
 /** @var Gallery $item */
@@ -39,6 +40,7 @@ DateTimePickerAsset::register($this);
         'item_id' => $item->id,
         'galleryId' => $item->id,
         'media' => !empty($item->id),
+        'button-text' => 'Добавить фото'
     ],
 ]) ?>
 <div class="uk-container uk-container-expand">
@@ -94,6 +96,10 @@ DateTimePickerAsset::register($this);
                         'selectType' => ImageSelector::SELECT_SINGLE,
                         'buttonText' => 'Выбрать изображение',
                     ]); ?>
+                    <?= GalleryTemplateSelector::widget([
+                        'name' => 'settings[template]',
+                        'value' => !empty($item->settings['template']) ? $item->settings['template'] : GalleryTemplateSelector::TMPL_MASONRY,
+                    ]) ?>
                 </div>
             </div>
         </div>

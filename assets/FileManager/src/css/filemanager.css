@@ -157,6 +157,7 @@
 #image-selector-modal > div {
     height: 100vh;
     overflow: hidden;
+    z-index: 11000;
 }
 
 #image-selector-modal .uk-modal-body {

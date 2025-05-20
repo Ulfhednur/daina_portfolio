@@ -55,4 +55,19 @@ class ImageHelper
         $image->setImageFormat('webp');
         return $image->getImageBlob();
     }
+
+    /**
+     * Отдаёт габариты картинки
+     *
+     * @param string $filePath
+     *
+     * @return array
+     * @throws ImagickException
+     */
+    public static function getDimensions(string $filePath):array
+    {
+        $image = new Imagick();
+        $image->readImage($filePath);
+        return $image->getImageGeometry();
+    }
 }

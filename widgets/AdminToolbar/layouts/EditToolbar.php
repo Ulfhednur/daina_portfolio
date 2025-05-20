@@ -34,7 +34,7 @@ use app\widgets\ImageSelector\ImageSelector;
                     <li><?= ImageSelector::Widget([
                             'selectType' => ImageSelector::SELECT_MULTIPLE,
                             'name' => 'img',
-                            'buttonText' => 'Фотографии',
+                            'buttonText' => !empty($options['button-text']) ? $options['button-text'] : 'Фотографии',
                             'buttonClass' => 'uk-button',
                             'galleryId' => array_key_exists('galleryId', $options) ? $options['galleryId'] : 0,
                         ]) ?>

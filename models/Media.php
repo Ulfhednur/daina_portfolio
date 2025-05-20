@@ -34,6 +34,7 @@ use yii\helpers\BaseInflector;
  * @property string $url
  * @property string $url_thumbnail
  * @property string $url_preview
+ * @property array  $settings
  */
 class Media extends ActiveRecord
 {
@@ -75,7 +76,18 @@ class Media extends ActiveRecord
             [['folder_id'], 'integer'],
             [['path', 'thumbnail', 'preview'], 'required'],
             ['path', 'unique'],
+            ['settings', 'validateSettings']
         ];
+    }
+
+    public function validateSettings(): bool
+    {
+        if (empty($this->settings['dimensions'])) {
+            $this->addError('settings', 'Ошибка предобработки изображения');
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -140,14 +152,14 @@ class Media extends ActiveRecord
      */
     public function beforeDelete(): bool
     {
-        if ($this->getRelatedItems()->count() > 0) {
-            return false;
-        }
-
         $file = new FileService();
         $file->removeImage($this->path);
 
         foreach ($this->getGalleryItems()->each() as $item) {
+            $item->delete();
+        }
+
+        foreach ($this->getRelatedItems()->each() as $item) {
             $item->delete();
         }
 

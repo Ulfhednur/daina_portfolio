@@ -89,3 +89,42 @@
 .uk-logo > img{
     max-height: 32px;
 }
+
+.field-settings-template label {
+    display: block;
+    position: relative;
+    background: transparent no-repeat scroll 0 0 / cover;
+    width: 96px;
+    height: 96px;
+}
+
+.field-settings-template label > input {
+    position: absolute;
+    top: 4px;
+    left: 0;
+}
+
+.field-settings-template label.label-masonry {
+    background-image: url("../img/masonry.png");
+}
+
+.field-settings-template label.label-justified {
+    background-image: url("../img/justified.png");
+}
+
+.field-settings-template label.label-grid {
+    background-image: url("../img/grid.png");
+}
+
+#admin-tool-panel{
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 40px;
+    z-index: 10000;
+}
+
+#admin-tool-panel + * {
+    margin-top: 40px;
+    padding-bottom: 40px;
+}
