@@ -54,6 +54,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <div class="fake-footer"></div>
 
 <?php $this->endBody() ?>
+
+<a href="#page-top" class="uk-icon-button" id="scroll-to-top" uk-icon="arrow-up" uk-scroll></a>
 </body>
 </html>
 <?php $this->endPage() ?>

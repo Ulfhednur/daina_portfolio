@@ -1,110 +1,3 @@
-.logo {
-    font-size: 3.22rem;
-    line-height: 1.3;
-    margin-bottom: 0.2em;
-    text-transform: uppercase;
-}
-
-.logo a {
-    text-decoration: none;
-}
-
-.logo a:hover {
-    color: #000;
-}
-
-.homepage {
-    overflow: hidden;
-    position: relative;
-}
-
-.homepage-bg {
-    background: url("/img/homepage_grayscale.jpg") no-repeat scroll center center / cover;
-}
-
-.homepage .content {
-    position: absolute;
-    left: 50%;
-    top: 20vh;
-    transform: translateX(-50%);
-    width: 100%;
-}
-
-.homepage .main-header .uk-navbar-nav > li > a {
-    font-size: 1.31em;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    text-shadow: 2px 2px 2px #000;
-    color: #fff;
-}
-
-.homepage .logo {
-    font-size: 3.11rem;
-    line-height: 1.1;
-    margin-bottom: 0.2em;
-    text-shadow: 2px 2px 2px #000;
-    color: #fff;
-}
-
-.homepage .logo a,
-.homepage .logo a:hover,
-.homepage .lang-switcher > .uk-navbar-item a,
-.homepage .lang-switcher > .uk-navbar-item a:hover,
-.homepage .lang-switcher > .uk-navbar-item a:visited {
-    color: #fff;
-}
-
-#main .container section:first-child {
-    min-height: calc(100vh - 190px);
-}
-
-.uk-navbar-nav > li:hover > a,
-.uk-navbar-nav > li.uk-active > a {
-    text-decoration: underline;
-}
-
-.gallery-image-link {
-    display: block;
-    overflow: hidden;
-}
-
-.gallery-image-link > img {
-    display: block;
-    transition: all 2s ease-in-out;
-    width: 100%;
-}
-
-.gallery-item:hover .gallery-image-link > img {
-    transform: scale(1.41);
-}
-
-.gallery-item h3 {
-    margin-bottom: 0;
-}
-
-h3 > a {
-    text-decoration: none;
-}
-
-h3 > a:hover {
-    color: #000;
-    text-decoration: none;
-}
-
-hr.read-more {
-    display: none;
-}
-
-.lang-switcher .uk-grid-divider.uk-grid-small > *,
-.lang-switcher .uk-grid-divider.uk-grid-column-small > * {
-    padding-left: 10px;
-}
-
-.lang-switcher .uk-grid-divider.uk-grid-small > :not(.uk-first-column)::before,
-.lang-switcher .uk-grid-divider.uk-grid-column-small > :not(.uk-first-column)::before {
-    left: 8px;
-}
-
 .flex-gallery {
     --space: 10px;
     --min-height: 450px;
@@ -116,7 +9,7 @@ hr.read-more {
     flex-wrap: wrap;
     grid-gap: var(--space);
     list-style: none;
-    margin: 0 !important; /* We use !important to avoid gaps in some environments. */
+    margin: 0 !important;
     padding: 0 !important;
 }
 
@@ -126,18 +19,12 @@ hr.read-more {
     aspect-ratio: var(--width) / var(--height);
     position: relative;
     overflow: hidden;
-    margin: 0 !important; /* We use !important to avoid gaps in some environments. */
-    padding: 0 !important; /* We use !important to avoid gaps in some environments. */
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .flex-gallery > .gallery-item > .gallery-image-link > img {
     position: absolute;
     width: 100%;
     height: 100%;
-}
-
-#scroll-to-top {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
 }

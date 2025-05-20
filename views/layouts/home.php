@@ -32,7 +32,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>" class="uk-height-1-1">
+<html lang="<?= Yii::$app->language ?>" class="uk-height-1-1 homepage-container">
 <head>
     <title><?= Html::encode($this->title) ?></title>
     <link rel="preconnect" href="https://fonts.googleapis.com">

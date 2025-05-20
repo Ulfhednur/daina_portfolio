@@ -99,19 +99,23 @@ jQuery(document).ready(function ($) {
                 }
             }
 
-            const formData = new FormData()
+
             i = 0;
             let queueSize = 0;
             let uploadSlots = 3;
             let uploaded = [];
             let executeUpload = function (file) {
-                if (typeof uploaded.find(item => item === file.name) === 'undefined') {
+                if (typeof uploaded.find(function(item) {
+                    return item === file.name;
+                }) === 'undefined') {
                     if (uploadSlots) {
                         uploadSlots--;
                         let uploadProgress = document.getElementById('upload-progress-' + i.toString());
                         let uploadNotification = document.getElementById('upload-notification-' + i.toString());
                         UIkit.scroll(filePreviews, {offset: 240}).scrollTo(uploadProgress);
+                        let formData = new FormData();
                         formData.append('file', file);
+                        uploaded.push(file.name)
                         $.ajax({
                             url: adminUrl + '/media/create/' + currentFolder,
                             type: 'POST',
@@ -120,7 +124,7 @@ jQuery(document).ready(function ($) {
                             contentType: false,
                             dataType: 'json',
                             xhr: function () {
-                                const xhr = new XMLHttpRequest();
+                                let xhr = new XMLHttpRequest();
                                 xhr.upload.addEventListener('progress', (e) => {
                                     const percent = (e.loaded / e.total) * 100;
                                     uploadProgress.setAttribute('value', percent.toFixed(2));
@@ -142,9 +146,10 @@ jQuery(document).ready(function ($) {
                                 uploadNotification.innerText = errorMsg;
                                 uploadNotification.className = 'uk-text-danger';
                                 uploadProgress.setAttribute('value', '0');
+                                formData = null;
                             },
                             complete() {
-                                uploaded.push(file.name)
+                                console.log('complete ' + file.name);
                                 uploadSlots++;
                                 queueSize--;
                                 if (queueSize === 0) {
@@ -158,7 +163,7 @@ jQuery(document).ready(function ($) {
                     } else {
                         setTimeout(function () {
                             executeUpload(file)
-                        }, 300);
+                        }, 300 + Math.floor(Math.random() * 200));
                     }
                 }
             }
