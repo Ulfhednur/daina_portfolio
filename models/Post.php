@@ -45,6 +45,19 @@ class Post extends Item
     }
 
     /**
+     * Преобразуем дату в российский формат
+     *
+     * @return void
+     */
+    public function afterFind(): void
+    {
+        if (!empty($this->created_date)) {
+            $this->created_date = \DateTime::createFromFormat('Y-m-d H:i:s', $this->created_date)->format('d.m.Y H:i:s');
+        }
+        parent::afterFind();
+    }
+
+    /**
      * Получение картинки поста
      *
      * @return ActiveQuery

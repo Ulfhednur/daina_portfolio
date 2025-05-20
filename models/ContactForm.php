@@ -18,10 +18,10 @@ use yii\base\Model;
  */
 class ContactForm extends Model
 {
-    public string $name;
-    public string $email;
-    public string $subject;
-    public string $body;
+    public string $name = '';
+    public string $email = '';
+    public string $subject = '';
+    public string $body = '';
     public ?string $verifyCode;
 
 

@@ -45,9 +45,10 @@ abstract class Item extends ActiveRecord
     const string ITEM_TYPE_PAGE = 'page';
     const string ITEM_TYPE_POST = 'post';
     const string ITEM_TYPE_GALLERY = 'gallery';
+    const string ITEM_TYPE_ALL = 'all';
 
     /** @var string тип текущей записи */
-    protected static string $itemType;
+    protected static string $itemType = self::ITEM_TYPE_ALL;
 
     /** @var bool флаг отключения транзакций, для обработки нескольких записей в одной транзакции */
     protected bool $disableTransactions = false;
@@ -85,6 +86,7 @@ abstract class Item extends ActiveRecord
             [['description_en', 'seo_description_en', 'seo_title_en', 'subtitle_en'], 'string'],
             [['image_id', 'published', 'ordering'], 'integer'],
             ['published', 'in', 'range' => [0, 1]],
+            ['published', 'default', 'value' => 1],
             [['title'], 'required'],
             ['alias', 'filter', 'filter' => function($value) {
                 if (empty($value)) {
@@ -102,12 +104,17 @@ abstract class Item extends ActiveRecord
      */
     public static function find(): ActiveQuery
     {
-        $query = parent::find()->andWhere(['item_type' => static::$itemType]);
+        $query = parent::find();
+
+        if (static::$itemType !== static::ITEM_TYPE_ALL) {
+            $query->andWhere(['item_type' => static::$itemType]);
+        }
 
         if (!langHelper::isLangDefault()) {
             $title = 'title_' . langHelper::getCurrentLang();
             $query->andWhere(['!=', $title, '']);
         }
+
         return $query;
     }
 
@@ -174,11 +181,11 @@ abstract class Item extends ActiveRecord
      *
      * @return ActiveQuery
      */
-    public static function Search(?string $search)
+    public static function Search(?string $search): ActiveQuery
     {
         $query = static::find();
         if ($search) {
-            $query->where(['like', 'title', $search]);
+            $query->andWhere(['like', 'title', $search]);
         }
         return $query;
     }

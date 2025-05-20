@@ -81,8 +81,13 @@ jQuery(document).ready(function ($) {
                     let progressBlock = document.createElement('div');
                     progressBlock.className = 'uk-width-5-6 uk-flex uk-flex-column uk-flex-between';
                     progressBlock.textContent = file.name;
+                    let uploadNotification = document.createElement('div');
+                    uploadNotification.className = 'uk-text-success';
+                    uploadNotification.setAttribute('id', 'upload-notification-' + i);
+                    uploadNotification.innerText = '&nbsp;';
+                    progressBlock.appendChild(uploadNotification);
                     let progress = document.createElement('progress');
-                    progress.className = 'uk-progress';
+                    progress.className = 'uk-progress uk-margin-remove';
                     progress.setAttribute('value', '0');
                     progress.setAttribute('max', '100');
                     progress.setAttribute('id', 'upload-progress-' + i);
@@ -102,6 +107,7 @@ jQuery(document).ready(function ($) {
                 if (uploadSlots) {
                     uploadSlots--;
                     let uploadProgress = document.getElementById('upload-progress-' + i.toString());
+                    let uploadNotification = document.getElementById('upload-notification-' + i.toString());
                     UIkit.scroll(filePreviews, {offset: 240}).scrollTo(uploadProgress);
                     formData.append('file', file);
                     $.ajax({
@@ -120,22 +126,20 @@ jQuery(document).ready(function ($) {
                             return xhr;
                         },
                         success: function (data) {
-                            UIkit.notification({
-                                message: 'Файл загружен',
-                                status: 'success',
-                                pos: 'top-center',
-                                timeout: 2000
-                            });
+                            uploadNotification.innerText = 'Файл загружен.'
                             reloadPanels(data);
                         },
                         error: function (xhr) {
+                            let errorMsg = JSON.parse(xhr.responseText).message;
                             UIkit.notification({
-                                message: JSON.parse(xhr.responseText).message,
+                                message: errorMsg,
                                 status: 'danger',
                                 pos: 'top-center'
                             });
+
+                            uploadNotification.innerText = errorMsg;
+                            uploadNotification.className = 'uk-text-danger';
                             uploadProgress.setAttribute('value', '0');
-                            uploadProgress.className = 'uk-progress uk-button-danger';
                         },
                         complete() {
                             uploadSlots++;

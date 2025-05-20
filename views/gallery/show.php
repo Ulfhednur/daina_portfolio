@@ -33,7 +33,7 @@ $this->params['lang_path'] = ['gallery/show', 'alias' => $item->alias];
         <section class="uk-section">
             <div class="uk-grid-small uk-child-width-1-4@m" uk-grid="masonry: pack" uk-lightbox="animation: slide">
                 <?php foreach ($item->media as $media){ ?>
-                    <div class="gallery-item uk-text-center">
+                    <div class="gallery-item uk-text-center" uk-scrollspy="cls:uk-animation-fade">
                         <div class="gallery-image-wrapper">
                             <a href="<?=$media->url?>" class="gallery-image-link" data-caption="<?=$media->title?>">
                                 <img src="<?=$media->url_preview?>" alt="<?=$media->alt?>">
