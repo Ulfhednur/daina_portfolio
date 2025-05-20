@@ -19,7 +19,7 @@ use yii\helpers\Url;
 $this->params['lang_path'] = ['gallery/display'];
 ?>
 <section class="uk-section uk-section-primary">
-    <div class="uk-container">
+    <div class="uk-container uk-container-expand">
         <div class="uk-text-center">
             <h1 class="uk-h1 uk-text-uppercase"><?= Yii::t('app', 'Галереи') ?></h1>
         </div>
@@ -27,20 +27,24 @@ $this->params['lang_path'] = ['gallery/display'];
             <div class="uk-grid-small uk-child-width-1-3@m" uk-grid>
                 <?php foreach ($items as $item) { ?>
                     <div class="gallery-item">
-                        <div class="gallery-image-wrapper">
-                            <a href="<?= Url::to(['gallery/show', 'alias' => $item->alias]) ?>"
-                               class="gallery-image-link">
-                                <img src="<?= $item->image->url_preview ?>" alt="<?= $item->title ?>">
-                            </a>
-                        </div>
-                        <h3 class="uk-h3 uk-text-uppercase">
-                            <a class="uk-display-block uk-width-1-1"
-                               href="<?= Url::to(['gallery/show', 'alias' => $item->alias]) ?>"><?= $item->title ?>
-                                <?php if (!empty($item->subtitle)) { ?>
-                                    <div class="uk-text-small uk-text-muted"><?= $item->subtitle ?></div>
-                                <?php } ?>
-                            </a>
-                        </h3>
+                        <figure class=" uk-position-relative">
+                            <div class="gallery-image-wrapper">
+                                <a href="<?= Url::to(['gallery/show', 'alias' => $item->alias]) ?>"
+                                   class="gallery-image-link">
+                                    <img src="<?= $item->image->url_preview ?>" alt="<?= $item->title ?>">
+                                </a>
+                            </div>
+                            <figcaption class="uk-overlay uk-overlay-primary uk-position-bottom uk-text-center">
+                                <h3 class="uk-h3 uk-text-uppercase">
+                                    <a class="uk-display-block uk-width-1-1"
+                                       href="<?= Url::to(['gallery/show', 'alias' => $item->alias]) ?>"><span class="uk-text-bold"><?= $item->title ?></span>
+                                        <?php if (!empty($item->subtitle)) { ?>
+                                            <div class="uk-text-small uk-text-muted"><?= $item->subtitle ?></div>
+                                        <?php } ?>
+                                    </a>
+                                </h3>
+                            </figcaption>
+                        </figure>
                     </div>
                 <?php } ?>
             </div>

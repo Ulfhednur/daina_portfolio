@@ -24,7 +24,7 @@ if ($item->seo_description) {
 $this->params['lang_path'] = ['gallery/show', 'alias' => $item->alias];
 ?>
 <section class="uk-section uk-section-primary">
-    <div class="uk-container">
+    <div class="uk-container uk-container-expand">
         <div class="uk-text-center">
             <h1 class="uk-h1 uk-text-uppercase">
                 <?= $item->title ?>

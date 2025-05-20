@@ -20,7 +20,7 @@ use yii\helpers\Url;
 $lang = langHelper::getCurrentLang();
 
 ?>
-<header class="main-header uk-text-center uk-section">
+<header class="main-header uk-text-center uk-section" id="#page-top">
     <div class="uk-container uk-container-xlarge uk-flex uk-flex-column uk-flex-between ">
         <h2 class="logo"><a href="<?= Url::to(['/', 'language' => $lang]) ?>"><?= Yii::t('app', Yii::$app->name) ?></a></h2>
         <nav class="uk-navbar-container uk-navbar-transparent">
@@ -56,4 +56,5 @@ $lang = langHelper::getCurrentLang();
             </div>
         </nav>
     </div>
+    <a href="#page-top" class="uk-icon-button" id="scroll-to-top" uk-icon="arrow-up" uk-scroll></a>
 </header>

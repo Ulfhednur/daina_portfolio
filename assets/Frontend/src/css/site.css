@@ -2,6 +2,7 @@
     font-size: 3.22rem;
     line-height: 1.3;
     margin-bottom: 0.2em;
+    text-transform: uppercase;
 }
 
 .logo a {
@@ -101,7 +102,7 @@ hr.read-more {
 
 .lang-switcher .uk-grid-divider.uk-grid-small > :not(.uk-first-column)::before,
 .lang-switcher .uk-grid-divider.uk-grid-column-small > :not(.uk-first-column)::before {
-    left: 5px;
+    left: 8px;
 }
 
 .flex-gallery {
@@ -133,4 +134,10 @@ hr.read-more {
     position: absolute;
     width: 100%;
     height: 100%;
+}
+
+#scroll-to-top {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
 }

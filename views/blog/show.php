@@ -22,7 +22,7 @@ if ($item->seo_description) {
 $this->params['lang_path'] = ['blog/show', 'alias' => $item->alias];
 ?>
 <section class="uk-section uk-section-primary">
-    <div class="uk-container">
+    <div class="uk-container uk-container-large">
         <div>
             <figure class="uk-inline">
                 <img src="<?= $item->image->url ?>" alt="<?= $item->image->alt ?>">

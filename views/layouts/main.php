@@ -34,6 +34,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <html lang="<?= Yii::$app->language ?>" class="uk-height-1-1">
 <head>
     <title><?= Yii::t('app', Yii::$app->name)?><?=$this->title ? ' - ' . $this->title : ''?></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <?php $this->head() ?>
 </head>
 <body class="uk-flex uk-flex-column uk-flex-between uk-height-1-1">

@@ -20,7 +20,7 @@ $this->title = $item->title;
 $this->params['lang_path'] = ['site/about', 'language' => 'ru'];
 ?>
 <section class="uk-section uk-section-primary">
-    <div class="uk-container uk-container-small">
+    <div class="uk-container uk-container-xlarge">
         <h1 class="uk-h1 uk-text-center"><?= Html::encode($this->title) ?></h1>
         <?= $item->description ?>
     </div>
