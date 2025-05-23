@@ -51,6 +51,7 @@ abstract class langHelper
      */
     public static function getCurrentLangCode(): string
     {
+
         return self::$langCodes[Yii::$app->getRequest()->get('language') ?? self::DEFAULT_LANG];
     }
 
@@ -102,18 +103,20 @@ abstract class langHelper
     public static function getLangHrefs(?array $path = []): array
     {
         $langHrefs = [];
-        if (!empty($path)) {
-            foreach (self::$langCodes as $langCode => $langName) {
-                if ($langCode != self::getCurrentLang()) {
-                    $path['language'] = $langCode;
-                    $langHrefs[$langCode] = [
-                        'href' => Url::to($path, 'https'),
-                        'hreflang' => $langCode,
-                        'langTitle' => self::$langTitles[$langCode],
-                    ];
-                }
+        if (empty($path)) {
+            $path = ['/'];
+        }
+        foreach (self::$langCodes as $langCode => $langName) {
+            if ($langCode != self::getCurrentLang()) {
+                $path['language'] = $langCode;
+                $langHrefs[$langCode] = [
+                    'href' => Url::to($path, 'https'),
+                    'hreflang' => $langCode,
+                    'langTitle' => self::$langTitles[$langCode],
+                ];
             }
         }
+
         return $langHrefs;
     }
 }

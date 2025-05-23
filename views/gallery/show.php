@@ -49,7 +49,7 @@ $this->params['lang_path'] = ['gallery/show', 'alias' => $item->alias];
                 <?php foreach ($item->media as $media) { ?>
                     <figure class="gallery-item uk-text-center" uk-scrollspy="cls:uk-animation-fade"
                                     style="--width: <?= $media->settings['dimensions']['width'] ?>;--height: <?= $media->settings['dimensions']['height'] ?>;']">
-                        <a href="<?= $media->url ?>" class="gallery-image-link" data-caption="<?= $media->title ?>">
+                        <a draggable="false" href="<?= $media->url ?>" class="gallery-image-link" data-caption="<?= $media->title ?>">
                             <img src="<?= $media->url_preview ?>" alt="<?= $media->alt ?>">
                         </a>
                     </figure>

@@ -10,19 +10,19 @@ use yii\helpers\Html;
 
 $this->title = $name;
 ?>
-<div class="uk-container uk-text-center">
-    <div class="uk-section">
-        <h1><?= Html::encode(Yii::t('app', $this->title)) ?></h1>
+<div class="uk-container uk-container-large uk-height-1-1 uk-text-center">
+    <div class="uk-section uk-overlay uk-overlay-primary uk-height-1-1">
+        <h1><?= Html::encode(Yii::t('error', $this->title)) ?></h1>
 
-        <div class="uk-background-danger uk-section">
-            <?= nl2br(Html::encode(Yii::t('app', $message))) ?>
+        <div class="uk-section uk-text-large">
+            <?= nl2br(Html::encode(Yii::t('error', $message))) ?>
         </div>
 
         <p>
-            <?= Yii::t('app', 'Указанная выше ошибка произошла во время обработки вашего запроса веб-сервером.') ?>
+            <?= Yii::t('error', 'Указанная выше ошибка произошла во время обработки вашего запроса веб-сервером.') ?>
         </p>
         <p>
-            <?= Yii::t('app', 'Пожалуйста, свяжитесь с нами, если вы считаете, что это ошибка сервера. Спасибо.') ?>
+            <?= Yii::t('error', 'Пожалуйста, свяжитесь с нами, если вы считаете, что это ошибка сервера. Спасибо.') ?>
         </p>
     </div>
 </div>

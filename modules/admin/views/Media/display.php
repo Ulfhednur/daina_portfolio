@@ -82,7 +82,7 @@ FileManagerAsset::register($this);
             </div>
         </div>
         <div>
-            <div class="uk-container uk-container-expand">
+            <div class="uk-container uk-container-expand" id="upload-container">
                 <div id="drag-drop-area" class="uk-background-muted">
                     <p><span><span uk-icon="cloud-upload"
                                    class="uk-text-primary"></span>&nbsp;Перетащите сюда файлы</span></p>

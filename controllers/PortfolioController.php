@@ -24,9 +24,7 @@ abstract class PortfolioController extends Controller
      */
     public function beforeAction($action)
     {
-        if ($action->id != 'error') {
-            langHelper::setCurrentLang();
-        }
+        langHelper::setCurrentLang();
         return parent::beforeAction($action);
     }
 

@@ -57,6 +57,8 @@ class SiteController extends PortfolioController
         if (!empty($path[1]) && $path[1] == env('ADMIN_URL')) {
             $error['layout'] = '@app/modules/admin/views/layouts/main.php';
             $error['view'] = '@app/modules/admin/views/error.php';
+        } else {
+            $error['layout'] = '@app/views/layouts/error.php';
         }
 
         return [

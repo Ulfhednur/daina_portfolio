@@ -39,66 +39,17 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
           rel="stylesheet">
     <?php $this->head() ?>
-    <style>
-        img {
-            pointer-events: none !important;
-        }
-
-        a, img {
-            -webkit-user-drag: none;
-            -khtml-user-drag: none;
-            -moz-user-drag: none;
-            -o-user-drag: none;
-            user-drag: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -o-user-select: none;
-            user-select: none;
-        }
-    </style>
-    <script>
-        window.addEventListener('keydown', function (e) {
-            console.log(e.ctrlKey, e.shiftKey, e.key);
-            if (e.key === 'F12') {
-                e.preventDefault();
-            }
-            if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-                e.preventDefault();
-            }
-            if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-                e.preventDefault();
-            }
-            if (e.ctrlKey && e.shiftKey && e.key === 'J') {
-                e.preventDefault();
-            }
-            if (e.ctrlKey && e.key === 'u') {
-                e.preventDefault();
-            }
-            if (e.ctrlKey || e.shiftKey) {
-                e.preventDefault();
-            }
-        });
-
-        window.addEventListener('contextmenu', function (e) {
-            e.preventDefault();
-        });</script>
 </head>
-<body class="uk-flex uk-flex-column uk-flex-between uk-height-1-1">
+<body class="uk-flex uk-flex-column uk-flex-between uk-height-1-1 error-page-bg">
 <?= $this->render('@app/views/layouts/menu.php', ['langData' => $langData]) ?>
 <?php $this->beginBody() ?>
-
-<main id="main" class="uk-flex-shrink-0" role="main">
-    <div class="container">
-        <?= $content ?>
-    </div>
+<main id="main" class="uk-flex-shrink-0  uk-height-1-1 uk-width-1-1" role="main">
+    <?= $content ?>
 </main>
 
 <div class="fake-footer"></div>
 
 <?php $this->endBody() ?>
-
-<a href="#page-top" class="uk-icon-button" id="scroll-to-top" uk-icon="arrow-up" uk-scroll></a>
 </body>
 </html>
 <?php $this->endPage() ?>

@@ -56,6 +56,31 @@ jQuery(document).ready(function ($) {
             handleDroppedFiles(files);
         });
 
+        let previewArea = document.getElementById('file-previews');
+
+        previewArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+        previewArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+        });
+        previewArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+        });
+
+
+        let offArea = document.getElementById('upload-container');
+
+        offArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+        offArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+        });
+        offArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+        });
+
         function handleDroppedFiles(files) {
             const filePreviews = document.getElementById('file-previews');
             const mediaTabs = $('.media-manager-tabs li');
@@ -105,7 +130,7 @@ jQuery(document).ready(function ($) {
             let uploadSlots = 3;
             let uploaded = [];
             let executeUpload = function (file) {
-                if (typeof uploaded.find(function(item) {
+                if (typeof uploaded.find(function (item) {
                     return item === file.name;
                 }) === 'undefined') {
                     if (uploadSlots) {
@@ -149,7 +174,6 @@ jQuery(document).ready(function ($) {
                                 formData = null;
                             },
                             complete() {
-                                console.log('complete ' + file.name);
                                 uploadSlots++;
                                 queueSize--;
                                 if (queueSize === 0) {
@@ -182,7 +206,6 @@ jQuery(document).ready(function ($) {
             spinnerModal.addClass('visible');
             let adminForm = $('.media-manager-form');
             let formData = adminForm.serialize() + '&allow-multiselect=1';
-            console.log(formData);
             let actionUrl = adminForm.attr('action');
             $.ajax({
                 url: actionUrl,
@@ -549,7 +572,7 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    function LightBoxInit (selector) {
+    function LightBoxInit(selector) {
         $(selector).on('click', function () {
             let lightBoxItem = UIkit.lightbox($(this), {});
             lightBoxItem.show();

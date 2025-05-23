@@ -28,3 +28,25 @@
     width: 100%;
     height: 100%;
 }
+
+.post-image-link,
+.post-image-link > img {
+    display: block;
+}
+
+.error-page-bg {
+    background: url("/img/error_bg.jpg") no-repeat scroll center center / cover;
+}
+
+.error-page-bg .uk-overlay-primary {
+    background: rgba(34, 34, 34, 0.5);
+    color: #fff;
+}
+
+.error-page-bg .uk-overlay-primary h1 {
+    font-size: 56px;
+}
+
+.error-page-bg .uk-overlay-primary .uk-text-large {
+    font-size: 5.5rem;
+}

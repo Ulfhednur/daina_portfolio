@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $adminUrl = env('ADMIN_URL');
@@ -44,6 +44,14 @@ $config = [
                         'app/error' => 'error.php',
                     ],
                 ],
+                'error' => [
+                    'class' => \yii\i18n\PhpMessageSource::class,
+                    'basePath' => '@app/messages',
+                    'sourceLanguage' => 'ru-RU',
+                    'fileMap' => [
+                        'error' => 'error.php',
+                    ],
+                ]
             ],
         ],
         'request' => [
@@ -64,7 +72,11 @@ $config = [
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
             'viewPath' => '@app/mail',
-            'useFileTransport' => true,
+            'useFileTransport' => false,
+            'transport' => [
+                'dsn' => 'smtps://' . env('SMTP_LOGIN') . ':' . env('SMTP_PASS') . '@' . env('SMTP_HOST') . ':' . env('SMTP_PORT'),
+                'pingThreshold' => 10000,
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
