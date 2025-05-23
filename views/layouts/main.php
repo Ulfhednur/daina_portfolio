@@ -59,7 +59,6 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     </style>
     <script>
         window.addEventListener('keydown', function (e) {
-            console.log(e.ctrlKey, e.shiftKey, e.key);
             if (e.key === 'F12') {
                 e.preventDefault();
             }
