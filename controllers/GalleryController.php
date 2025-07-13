@@ -74,6 +74,7 @@ class GalleryController extends PortfolioController
      * @param string $alias
      *
      * @return string
+     * @throws NotFoundHttpException
      */
     public function actionShow(string $alias): string
     {
